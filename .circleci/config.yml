@@ -34,27 +34,26 @@ jobs:
 
   build_docker:
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:12
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build docker image
-          command: docker build -t proofofwork-node . 
+          command: docker build -t $DOCKER_REPO:$CIRCLE_BRANCH . 
       - run:
           name: Push to Docker Hub
           command: |
             docker login --username $DOCKER_USER --password $DOCKER_PASSWORD
-            docker tag proofofwork-node proofofwork/proofofwork-node:$CIRCLE_BRANCH
-            docker push proofofwork/proofofwork-node:$CIRCLE_BRANCH
+            docker push $DOCKER_REPO:$CIRCLE_BRANCH
 
   deploy:
     machine:
-      image: ubuntu-1604:202007-01
+      image: ubuntu-2004:202201-02
     steps:
       - run:
           name: Deploy to Web Servers
-          command: ssh ubuntu@pow.co "sudo chef-client -o recipe[pow.co::api]"
+          command: echo 'NO DEPLOY! INSERT DEPLOY COMMAND HERE'
 
 
 workflows:
