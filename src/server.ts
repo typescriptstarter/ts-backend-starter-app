@@ -39,19 +39,17 @@ export const server = new Server({
 server.route({
   method: 'GET',
   path: '/api/v0/status',
-  handler: async (req, h) => {
-    return h.response({ success: true }).code(200)
-  },
+  handler: handlers.Status.index,
   options: {
     description: 'Simply check to see that the server is online and responding',
-    tags: ['api'],
-    /*response: {
+    tags: ['api', 'system'],
+    response: {
       failAction: 'log',
       schema: Joi.object({
-        success: Joi.boolean()
-      })
+        status: Joi.string().valid('OK', 'ERROR').required(),
+        error: Joi.string().optional()
+      }).label('ServerStatus')
     }
-    */
   }
 })
 
@@ -59,10 +57,10 @@ const swaggerOptions = {
   info: {
     title: 'API Docs',
     version: Pack.version,
-    description: 'Base Rabbi Service'
+    description: 'Developer API Documentation \n\n *** DEVELOPERS *** \n\n Edit this file under `swaggerOptions` in `src/server.ts` to better describe your service.'
   },
   schemes: ['https'],
-  host: 'https://rabbi.21e8.tech',
+  host: 'http://localhost:8000',
   documentationPath: '/',
   grouping: 'tags'
 }
