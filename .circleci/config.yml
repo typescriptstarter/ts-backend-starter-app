@@ -1,0 +1,75 @@
+version: 2.1
+jobs:
+
+  build:
+    docker:
+      - image: circleci/node:14
+      - image: circleci/postgres:9.5-postgis
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: database
+          POSTGRES_PASSWORD: "letmein"
+      - image: rabbitmq:3
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Migrate & Seed Test Database
+          command: npx sequelize db:migrate --url=postgres://postgres:letmein@localhost/database
+      - run:
+          name: Run Main Tests
+          command: npm test
+      - run:
+          name: Report Code Coverage
+          command: |
+            curl -Os https://uploader.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov
+      - run:
+          name: Tag and Release New Version
+          command: npx semantic-release
+
+
+  build_docker:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build docker image
+          command: docker build -t proofofwork-node . 
+      - run:
+          name: Push to Docker Hub
+          command: |
+            docker login --username $DOCKER_USER --password $DOCKER_PASSWORD
+            docker tag proofofwork-node proofofwork/proofofwork-node:$CIRCLE_BRANCH
+            docker push proofofwork/proofofwork-node:$CIRCLE_BRANCH
+
+  deploy:
+    machine:
+      image: ubuntu-1604:202007-01
+    steps:
+      - run:
+          name: Deploy to Web Servers
+          command: ssh ubuntu@pow.co "sudo chef-client -o recipe[pow.co::api]"
+
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - build_docker:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build_docker
+          filters:
+            branches:
+              only:
+                - master
+
