@@ -7,9 +7,9 @@ import { HealthPlugin } from 'hapi-k8s-health'
 
 import { log } from './log'
 
-const Joi = require('joi')
-
 import { join } from 'path'
+
+const Joi = require('joi')
 
 const Inert = require('@hapi/inert');
 

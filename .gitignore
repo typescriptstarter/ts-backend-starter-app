@@ -7,3 +7,7 @@ temp/.env
 .env
 .bit
 get402.json
+**/*.swp
+**/*.swo
+*.swo
+*.swp
