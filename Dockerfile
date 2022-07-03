@@ -17,3 +17,4 @@ RUN npm run build
 
 RUN npm link
 
+CMD rabbi start
