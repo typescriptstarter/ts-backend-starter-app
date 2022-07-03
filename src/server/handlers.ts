@@ -5,7 +5,9 @@ function capitalizeFirstLetter(string) {
 
 export function load(dirname) {
 
-  var handlers: any = require('require-all')({
+  var handlers: any = {}
+
+  var tsHandlers: any = require('require-all')({
     dirname,
     filter      :  /(.+)\.ts$/,
     map: function(name, path) {
@@ -18,6 +20,23 @@ export function load(dirname) {
       .join('');
     }
   });
+
+  var jsHandlers: any = require('require-all')({
+    dirname,
+    map: function(name, path) {
+
+      return name.split('_').map(p => {
+
+        return capitalizeFirstLetter(p);
+
+      })
+      .join('');
+    }
+  });
+
+  handlers = Object.assign(handlers, jsHandlers);
+
+  handlers = Object.assign(handlers, tsHandlers);
 
   return handlers;
 }

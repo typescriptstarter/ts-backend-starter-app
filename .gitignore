@@ -11,3 +11,5 @@ get402.json
 **/*.swo
 *.swo
 *.swp
+dist/
+.rabbi/config.json

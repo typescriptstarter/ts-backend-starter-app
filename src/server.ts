@@ -1,21 +1,15 @@
 
 require('dotenv').config()
 
-import { Server } from '@hapi/hapi'
+import config from './config'
 
-import { HealthPlugin } from 'hapi-k8s-health'
+import { Server } from '@hapi/hapi'
 
 import { log } from './log'
 
 import { join } from 'path'
 
 const Joi = require('joi')
-
-const Inert = require('@hapi/inert');
-
-const Vision = require('@hapi/vision');
-
-const HapiSwagger = require('hapi-swagger');
 
 const Pack = require('../package');
 
@@ -24,8 +18,8 @@ import { load } from './server/handlers'
 const handlers = load(join(__dirname, './server/handlers'))
 
 export const server = new Server({
-  host: process.env.HOST || "0.0.0.0",
-  port: process.env.PORT || 8000,
+  host: config.get('host'),
+  port: config.get('port'),
   routes: {
     cors: true,
     validate: {
@@ -36,9 +30,28 @@ export const server = new Server({
   }
 });
 
+if (config.get('prometheus_enabled')) {
+
+  log.info('server.metrics.prometheus', { path: '/metrics' })
+
+  const { register: prometheus } = require('./metrics')
+
+  server.route({
+    method: 'GET',
+    path: '/metrics',
+    handler: async (req, h) => {
+      return h.response(await prometheus.metrics())
+    },
+    options: {
+      description: 'Prometheus Metrics about Node.js Process & Business-Level Metrics',
+      tags: ['system']
+    }
+  })
+
+}
+
 server.route({
-  method: 'GET',
-  path: '/api/v0/status',
+  method: 'GET', path: '/api/v0/status',
   handler: handlers.Status.index,
   options: {
     description: 'Simply check to see that the server is online and responding',
@@ -53,18 +66,6 @@ server.route({
   }
 })
 
-const swaggerOptions = {
-  info: {
-    title: 'API Docs',
-    version: Pack.version,
-    description: 'Developer API Documentation \n\n *** DEVELOPERS *** \n\n Edit this file under `swaggerOptions` in `src/server.ts` to better describe your service.'
-  },
-  schemes: ['https'],
-  host: 'http://localhost:8000',
-  documentationPath: '/',
-  grouping: 'tags'
-}
-
 var started = false
 
 export async function start() {
@@ -73,21 +74,43 @@ export async function start() {
 
   started = true
 
-  await server.register([
-      Inert,
-      Vision,
-      {
-        plugin: HapiSwagger,
-        options: swaggerOptions
+  if (config.get('swagger_enabled')) {
+
+    const swaggerOptions = {
+      info: {
+        title: 'API Docs',
+        version: Pack.version,
+        description: 'Developer API Documentation \n\n *** DEVELOPERS *** \n\n Edit this file under `swaggerOptions` in `src/server.ts` to better describe your service.'
       },
-      {
-        plugin: HealthPlugin
-      }
-  ]);
+      schemes: ['https'],
+      host: 'http://localhost:8000',
+      documentationPath: '/',
+      grouping: 'tags'
+    }
+
+    const Inert = require('@hapi/inert');
+
+    const Vision = require('@hapi/vision');
+
+    const HapiSwagger = require('hapi-swagger');
+
+    await server.register([
+        Inert,
+        Vision,
+        {
+          plugin: HapiSwagger,
+          options: swaggerOptions
+        }
+    ]);
+
+    log.info('server.api.documentation.swagger', swaggerOptions)
+  }
 
   await server.start();
 
   log.info(server.info)
+
+  return server;
 
 }
 
