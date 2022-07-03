@@ -1,6 +1,6 @@
 {
    "name": "rabbi_cli_app",
-   "version": "0.1.0",
+   "version": "0.1.1",
    "private": true,
    "description": "",
    "scripts": {
@@ -13,7 +13,7 @@
       "commit": "npx cz"
    },
    "bin": {
-      "rabbi_cli_app": "./dist/bin/cli.js"
+      "rabbi": "./dist/bin/cli.js"
    },
    "keywords": [],
    "author": "Zyler",
@@ -32,7 +32,7 @@
       "pg": "^8.4.0",
       "prom-client": "^14.0.1",
       "prompt-async": "^0.9.9",
-      "rabbi": "^1.17.4",
+      "rabbi": "^1.19.4",
       "winston": "^3.3.3",
       "ws": "^8.2.0"
    },

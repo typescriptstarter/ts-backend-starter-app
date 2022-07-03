@@ -12,6 +12,18 @@ import { start as main } from '../main'
 
 program
   .version(version)
+  .option('--config <path>')
+  .option('--host <ipaddress>')
+  .option('--port <integer>')
+  .option('--prometheus_enabled <boolean>')
+  .option('--amqp_enabled <boolean>')
+  .option('--http_api_enabled <boolean>')
+  .option('--swagger_enabled <boolean>')
+  .option('--postgres_enabled <boolean>')
+  .option('--database_url <connection_string>')
+  .option('--amqp_url <connection_string>')
+  .option('--amqp_exchange <name>')
+  .option('--amqp_enabled <boolean>')
 
 program
   .command('echo <statement>')

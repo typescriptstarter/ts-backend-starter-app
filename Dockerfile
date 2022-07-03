@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:16
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -13,4 +13,7 @@ RUN npm install
 # Bundle app source
 COPY . /usr/src/app
 
-CMD npm start
+RUN npm run build
+
+RUN npm link
+
