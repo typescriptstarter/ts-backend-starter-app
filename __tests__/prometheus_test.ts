@@ -22,7 +22,7 @@ describe('Scraping Prometheus Metrics', () => {
 
   })
 
-  it('GET /liveness should return success', async () => {
+  it.skip('GET /liveness should return success', async () => {
 
     const response = await server.inject({
       method: 'GET',
@@ -33,7 +33,7 @@ describe('Scraping Prometheus Metrics', () => {
 
   })
 
-  it('GET /readiness should return success', async () => {
+  it.skip('GET /readiness should return success', async () => {
 
     const response = await server.inject({
       method: 'GET',
