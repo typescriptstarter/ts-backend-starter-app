@@ -16,12 +16,6 @@ jobs:
           name: Install Dependencies
           command: npm install
       - run:
-          name: Migrate & Seed Test Database
-          command: npx sequelize db:migrate --url=postgres://postgres:letmein@localhost/database
-      - run:
-          name: Migrate & Seed Test Database
-          command: export TEST_DATABASE_URL=postgres://postgres:letmein@localhost/database
-      - run:
           name: Run Main Tests
           command: npm test
       - run:
