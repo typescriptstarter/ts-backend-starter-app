@@ -29,15 +29,15 @@ nconf.add('global_file', { type: 'file', file: global_file, transform })
 
 export function loadFromFiles() {
 
-  log.info('config.file.project.load', { path: project_file })
+  log.debug('config.file.project.load', { path: project_file })
 
   nconf.use('project_file', { type: 'file', file: project_file, transform })
 
-  log.info('config.file.user.load', { path: user_file })
+  log.debug('config.file.user.load', { path: user_file })
 
   nconf.use('user_file', { type: 'file', file: user_file, transform })
 
-  log.info('config.file.global.load', { path: global_file })
+  log.debug('config.file.global.load', { path: global_file })
 
   nconf.use('global_file', { type: 'file', file: global_file, transform })
 

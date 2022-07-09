@@ -3,21 +3,25 @@ import config from '../config'
 
 import * as rabbi from 'rabbi'
 
-const dirname = `${__dirname}/../actors`
-
 import { log } from '../log'
 
-var tsModules: any = require('require-all')({
-  dirname,
-  filter      :  /(.+)\.ts$/,
-});
+const requireAll = require('require-all')
 
-var jsModules: any = require('require-all')({
-  dirname,
-  filter      :  /(.+)\.js$/,
-});
+function loadModules(directory: string) {
 
-var modules: any = Object.assign(tsModules, jsModules)
+  var tsModules: any = requireAll({
+    directory,
+    filter      :  /(.+)\.ts$/,
+  });
+
+  var jsModules: any = requireAll({
+    directory,
+    filter      :  /(.+)\.js$/,
+  });
+
+  return Object.assign(tsModules, jsModules)
+
+}
 
 interface ActorParams {
   name: string;
@@ -52,18 +56,33 @@ class Actor {
   }
 }
 
-export async function start(): Promise<Actor[]> {
+export async function start(directory?: string): Promise<rabbi.Actor[]> {
 
   log.info('rabbi.actors.start')
 
-  const actors = Object.keys(modules).map(name => {
+  if (!directory) {
 
-    return new Actor({
+    directory = `${__dirname}/../actors`
+  }
+
+  const modules = loadModules(directory)
+
+  const actors: rabbi.Actor[] = Object.keys(modules).map(name => {
+
+    let actor = new Actor({
       name: modules[name],
       queue: modules[name].queue || name,
       routingkey: modules[name].routingkey  || name,
       exchange: modules[name].exchange || config.get("amqp_exchange"),
       start: modules[name].start || modules[name].default
+    })
+
+    return rabbi.Actor.create({
+      exchange: actor.exchange,
+      routingkey: actor.routingkey,
+      queue: actor.queue,
+      connection: rabbi.connection,
+      channel: rabbi.channel
     })
 
   })
@@ -72,14 +91,7 @@ export async function start(): Promise<Actor[]> {
 
     log.info('rabbi.actor.start', actor.toJSON())
 
-    rabbi.Actor.create({
-      exchange: actor.exchange,
-      routingkey: actor.routingkey,
-      queue: actor.queue,
-      connection: rabbi.connection,
-      channel: rabbi.channel
-    })
-    .start(actor.start)
+    actor.start(actor.start)
 
   }
 

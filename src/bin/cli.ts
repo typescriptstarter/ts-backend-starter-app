@@ -10,6 +10,8 @@ import { start as actors } from '../rabbi/actors'
 
 import { start as main } from '../main'
 
+import * as circleci from '../rabbi/circleci'
+
 program
   .version(version)
   .option('--config <path>')
@@ -56,6 +58,107 @@ program
   .action(() => {
 
     actors()
+
+  })
+program
+  .command('circleci_getproject')
+  .action(async () => {
+
+    try {
+
+      let project = await circleci.getProject()
+
+      console.log(project)
+
+    } catch(error) {
+
+      console.error(error)
+    }
+
+  })
+
+program
+  .command('circleci_getenv <name>')
+  .action(async (name) => {
+
+    try {
+
+      let env = await circleci.getEnv({ name })
+
+      console.log(env)
+
+    } catch(error) {
+
+      console.error(error)
+    }
+
+  })
+
+program
+  .command('circleci_setenv <name> <value>')
+  .action(async (name, value) => {
+
+    try {
+
+      let env = await circleci.setEnv({ name, value })
+
+      console.log(env)
+
+    } catch(error) {
+
+      console.error(error)
+    }
+
+  })
+
+program
+  .command('circleci_listenv')
+  .action(async () => {
+
+    try {
+
+      let env = await circleci.listEnv()
+
+      console.log(env)
+
+    } catch(error) {
+
+      console.error(error)
+    }
+
+  })
+
+program
+  .command('circleci_listpipelines')
+  .action(async () => {
+
+    try {
+
+      let result = await circleci.listPipelines()
+
+      console.log(result)
+
+    } catch(error) {
+
+      console.error(error)
+    }
+
+  })
+
+program
+  .command('circleci_set_env_from_config')
+  .action(async () => {
+
+    try {
+
+      let result = await circleci.setEnvFromConfig()
+
+      console.log(result)
+
+    } catch(error) {
+
+      console.error(error)
+    }
 
   })
 
