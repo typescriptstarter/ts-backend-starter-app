@@ -24,6 +24,7 @@
       "@hapi/inert": "^6.0.5",
       "@hapi/joi": "^17.1.1",
       "@hapi/vision": "^6.1.0",
+      "@octokit/core": "^4.1.0",
       "commander": "^9.3.0",
       "dotenv": "^10.0.0",
       "hapi-swagger": "^14.3.0",

@@ -86,7 +86,25 @@ server.route({
   }
 })
 
+server.route({
+  method: 'GET',
+  path: '/auth/github/callback',
+  handler: handlers.GithubAuth.callback,
+  options: {
+    description: 'Handle Authentication From Github Apps',
+    tags: ['github', 'auth']
+  }
+})
 
+server.route({
+  method: 'GET',
+  path: '/api/v1/github/issues/{org}',
+  handler: handlers.GithubIssues.index,
+  options: {
+    description: 'List all issues for github organization',
+    tags: ['api', 'github', 'issues']
+  }
+})
 
 var started = false
 
