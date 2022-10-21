@@ -76,6 +76,16 @@ server.route({
   }
 })
 
+server.route({
+  method: 'GET',
+  path: '/api/v1/webhooks/github/pow-co',
+  handler: handlers.GithubWebhooks.index,
+  options: {
+    description: 'List all webhooks for pow-co organization on Github',
+    tags: ['api', 'webhooks', 'github']
+  }
+})
+
 
 
 var started = false
