@@ -123,7 +123,7 @@ export async function start() {
         description: 'Developer API Documentation \n\n *** DEVELOPERS *** \n\n Edit this file under `swaggerOptions` in `src/server.ts` to better describe your service.'
       },
       schemes: ['https'],
-      host: 'http://localhost:8000',
+      host: 'powco.dev',
       documentationPath: '/',
       grouping: 'tags'
     }
