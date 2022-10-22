@@ -5,6 +5,18 @@ import * as models from '../../models'
 
 import * as Boom from 'boom'
 
+import { notifyIssueOpened } from '../../rocketchat'
+
+async function onWebhookCreate(payload)  {
+
+  if (payload.event === 'opened' && payload.issue) {
+
+    await notifyIssueOpened(payload)
+
+  }
+
+}
+
 export async function create(req, h) {
 
   const { payload } = req

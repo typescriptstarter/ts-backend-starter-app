@@ -36,6 +36,7 @@
       "prompt-async": "^0.9.9",
       "rabbi": "^1.19.4",
       "sequelize": "^6.25.3",
+      "superagent": "^8.0.2",
       "winston": "^3.3.3",
       "ws": "^8.2.0"
    },
