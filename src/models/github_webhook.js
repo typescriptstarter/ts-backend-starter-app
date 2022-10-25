@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   GithubWebhook.init({
-    payload: DataTypes.JSON
+    payload: DataTypes.JSON,
+    tx_id: DataTypes.STRING,
+    tx_output_index: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'GithubWebhook',

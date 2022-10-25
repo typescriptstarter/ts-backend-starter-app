@@ -1,4 +1,6 @@
 
+require('dotenv').config()
+
 const nconf = require('nconf')
 
 const os = require('os')
