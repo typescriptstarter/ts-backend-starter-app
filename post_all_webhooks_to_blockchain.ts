@@ -12,13 +12,13 @@ export const routingkey = 'dev.powco.github.webhook'
 
 import { fetch } from 'powco'
 
-import { loadWallet } from 'stag-wallet'
-
-import { onchain } from './src/onchain'
+import { onchain } from 'stag-wallet'
 
 import { Op } from 'sequelize'
 
 import * as models from './src/models'
+
+const axios = require('axios')
 
 export default async function start() {
 
@@ -26,17 +26,16 @@ export default async function start() {
     web: 'hook'
   }
 
-  const wallet = await loadWallet()
-
   const webhooks = await models.GithubWebhook.findAll({
 
     where: {
 
-      tx_id: {
+      /*tx_id: {
 
         [Op.eq]: null
 
       }
+      */
 
     },
 
@@ -44,16 +43,22 @@ export default async function start() {
 
   })
 
+  console.log('webhooks result', webhooks)
+
   for (let webhook of webhooks) {
 
     console.log(webhook.toJSON())
 
+    if (!webhook.payload.issue) {
+      continue;
+    }
+
     if (!webhook.tx_id) {
 
-      const { txid, txhex, txo } = await onchain(wallet).post({
+      const { txid, txhex, txo } = await onchain.post({
         app: 'alpha.powco.dev',
         key: 'github.webhook',
-        val
+        val: webhook.payload
       })
 
       log.info('rabbi.actor.stag.onchain.post.result', { txid, txhex, txo })
@@ -63,6 +68,8 @@ export default async function start() {
       await webhook.save()
 
     }
+
+    await axios.get(`https://onchain.sv/api/v1/events/${webhook.tx_id}`)
 
   }
 

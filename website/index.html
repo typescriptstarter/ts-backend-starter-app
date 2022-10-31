@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>PROOF OF WORK COLLECTIVE</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="POWCO.DEV PROOF OF WORK COLLECTIVE" />
+	<meta name="keywords" content="proofofwork" />
+	<meta name="author" content="1thedonald" />
+
+	<!-- 
+	//////////////////////////////////////////////////////
+
+	FREE HTML5 TEMPLATE 
+	DESIGNED & DEVELOPED by FreeHTML5.co
+		
+	Website: 		http://freehtml5.co/
+	Email: 			info@freehtml5.co
+	Twitter: 		http://twitter.com/fh5co
+	Facebook: 		https://www.facebook.com/fh5co
+
+	//////////////////////////////////////////////////////
+	 -->
+
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content="POWCO.DEV"/>
+	<meta property="og:image" content="PROOF OF WORK COLLECTIVE"/>
+	<meta property="og:url" content="https://powco.dev"/>
+	<meta property="og:site_name" content="POWCO.DEV"/>
+	<meta property="og:description" content="PROOF OF WORK COLLECTIVE"/>
+	<meta name="twitter:title" content="POWCO.DEV" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="https://powco.dev" />
+	<meta name="twitter:card" content="" />
+
+	<!--<link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700,800" rel="stylesheet">-->
+	<link href="https://bitcoinfileserver.com/dd8f402272da32eb2047debb8d8a43adabd682378a0a8ff034ad569acc29d712" rel="stylesheet">
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="https://bitcoinfileserver.com/9a0aab88c1eb75566454bf670a4942d629ccaaef745e50fc518a63001dd51263">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="https://bitcoinfileserver.com/df6d6b8059d1133d5da61519ad6cee9bbc82a38b9401909f14563511c8c718a6">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="https://bitcoinfileserver.com/4c1bd3eaa389cc781d1d5726d7cf4d153bdf9b98e22695605d4528475300fb09">
+	
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="https://bitcoinfileserver.com/300f6df58dd7bda97226912c05cf524e5b39be41199b79e2784b32e70190f79c">
+
+	<!-- https://github.com/evilstreak/markdown-js -->
+	<script src="/js/markdown.min.js"></script>
+
+	<!-- Modernizr JS js/modernizr-2.6.2.min.js -->
+	<script src="https://bitcoinfileserver.com/d81cab1c4af0c127b7c432868623de6c39a968231b22b90282b145a084ebb439"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+	<!--<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>-->
+	<script src="https://bitcoinfileserver.com/5fe2d2fed7345d7c00dc62e980b28345045cbe21bb60891cfe69a76e6fc5eb14"></script>
+
+	<!--<script src="https://cdn.jsdelivr.net/npm/luxon@3.0.4/build/global/luxon.min.js"></script>-->
+	<script src="https://bitcoinfileserver.com/368a608dc5ccbf3bf89ad77958ada99ef4687481bb396ee652f25aa845437c61"></script>
+
+	<!--<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>-->
+	<script src="https://bitcoinfileserver.com/3443845d36dcc977bab7e5abc016e9144ac30efa58648b30c60ce9d0f3a273e0"></script>
+
+		<!--<script src="css/js-snackbar.min.css"></script>-->
+		<script src="https://bitcoinfileserver.com/fbb1b7d9591cfffdbb6040bc4f6b7d230880b57bd41e5b1019a6ee330937fad5"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/node-snackbar@latest/src/js/snackbar.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/node-snackbar@latest/dist/snackbar.min.css" />
+		
+	</head>
+	<body>
+		
+	<div class="fh5co-loader"></div>
+	
+	<div id="page">
+		<div id="fh5co-aside" style="background-color: black; background-size: 80% 80%; background-image: url(/images/powcodev-high-resolution-logo-color-on-transparent-background.svg)">
+			<nav role="navigation">
+				<ul>
+					<li><a href=""><i class="icon-home"></i></a></li>
+				</ul>
+			</nav>
+
+		</div>
+		<div id="fh5co-main-content">
+			<div class="fh5co-post" data-onchain="homepage-links-list" id="homepage-links-list"> 
+	
+				<footer>
+					<div>
+					&copy; POWCO.DEV
+					</div>
+				</footer>
+			</div>
+		</div>
+	</div>
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+	</div>
+
+	<template type="text/x-handlebars-template" id="link-list-item-template">
+
+		<div class="fh5co-entry padding homepage-links-item">
+			<img src="{{image_url}}" alt="{{image_alt}}">
+			<div>
+				<span class="fh5co-post-date"><a target="_blank" href="https://whatsonchain.com/tx/{{txid}}">{{timestamp}}</a></span>
+				<h2><a target="_blank" href="{{href}}">{{title}}</a></h2>
+				<p>
+					<svg class='boost-button' data-txid="{{txid}}" style="float:left; width: 70px;">
+					<path
+					className="pulse"
+					d="M32.5 65C50.4493 65 65 50.4493 65 32.5C65 14.5507 50.4493 0 32.5 0C14.5507 0 0 14.5507 0 32.5C0 50.4493 14.5507 65 32.5 65Z"
+					fill="#CEDEFD"
+				  ></path>
+				  <path
+					className="pulse"
+					d="M32.5 65C50.4493 65 65 50.4493 65 32.5C65 14.5507 50.4493 0 32.5 0C14.5507 0 0 14.5507 0 32.5C0 50.4493 14.5507 65 32.5 65Z"
+				  ></path>
+				  <path
+					className="pulse"
+					d="M32.4999 52.5876C43.5945 52.5876 52.5886 43.5936 52.5886 32.4989C52.5886 21.4042 43.5945 12.4102 32.4999 12.4102C21.4052 12.4102 12.4111 21.4042 12.4111 32.4989C12.4111 43.5936 21.4052 52.5876 32.4999 52.5876Z"
+					fill="#6B9CFA"
+				  ></path>
+				  <path
+					d="M44.9113 32.8604C44.9113 37.5655 42.2948 41.7715 38.4331 43.8773C36.6715 44.8413 34.646 41.5305 32.5 41.5305C30.4343 41.5305 28.4892 44.7667 26.7735 43.8773C22.7971 41.8059 20.083 37.6516 20.083 32.8604C20.083 26.0035 25.6431 20.4434 32.5 20.4434C39.3569 20.4434 44.9113 26.0035 44.9113 32.8604Z"
+					fill="#085AF6"
+				  ></path>
+				  <path
+					d="M40.1719 32.6561C40.1719 35.6054 38.5079 38.1645 36.0692 39.4499C35.002 40.0122 33.7855 36.2423 32.4945 36.2423C31.1288 36.2423 29.8492 40.0696 28.7418 39.4499C26.4007 38.1359 24.8228 35.5308 24.8228 32.6561C24.8228 28.4214 28.2598 24.9844 32.4945 24.9844C36.7291 24.9844 40.1719 28.4157 40.1719 32.6561Z"
+					fill="white"
+				  ></path>
+				</svg>
+				<span style="float:left" class='subtitle'>{{{content}}}</span>
+
+			</p>
+			</div>
+		</div>
+	</template>
+
+	<!-- jsSnackbar -->
+	<!-- jsSnackbar js/js-snackbar.min.js -->
+	<script src="https://bitcoinfileserver.com/48c4bfc4ac789f069869d2f8319678f9a3b31d4897519bccb21d25f4ac682977"></script>
+
+	<!-- jQuery -->
+	<!-- jQuery Easing js/jquery.min.js -->
+	<script src="https://bitcoinfileserver.com/3eae92b20a82d8862952b96212fddd0f7154b6220ee2ecbdc45c50a24fc62242"></script>
+
+
+	<!-- jQuery Easing js/jquery.easing.1.3.js -->
+	<script src="https://bitcoinfileserver.com/e2f3d834b7fb1d7f9c86e23bde9a148e19bdd46e2d3d06b8848abdc3738da0ce"></script>
+
+
+	<!-- Bootstrap js/bootstrap.min.js-->
+	<script src="https://bitcoinfileserver.com/1996fbb581322616ea280a67de6cf3604583cc2aae4756ca4859891afd976b48"></script>
+
+
+	<!-- Waypoints js/jquery.waypoints.min.js-->
+	<script src="https://bitcoinfileserver.com/863262bf5dd1a5944df20e1465f07793af45d0146436e928d37893d0d515c1f8"></script>
+
+
+	<!-- Stellar Parallax js/jquery.stellar.min.js-->
+	<script src="https://bitcoinfileserver.com/6f7f0db8a38a9f06c64ed98fc125ede5373dd099bf2080f7bf702a6407d5f6b7"></script>
+
+	<!-- Relayx js/relayone.js-->
+	<script src="https://bitcoinfileserver.com/8e8e91c956ae36f799edc150b535b26f239d5708fe3f03ca6061263b7d1d71ee"></script>
+
+	<!-- bsv.min.js -->
+	<script src="https://bitcoinfileserver.com/c09966338d166281f6cd57cb7f1f212f13b63c185debc58b07710444f4290553"></script>
+
+	<!-- Main js/main.js-->
+	<script src="js/main.js"></script>
+	<!--<script src="https://bitcoinfileserver.com/307a7291864a79382c0f64da80029c6537a4d1ebd618b498be352ddc6f46023e"></script>-->
+
+	<script>
+
+	</script>
+	</body>
+</html>
+

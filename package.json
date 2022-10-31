@@ -37,7 +37,7 @@
       "prompt-async": "^0.9.9",
       "rabbi": "^1.19.4",
       "sequelize": "^6.25.3",
-      "stag-wallet": "^0.0.2",
+      "stag-wallet": "^0.0.3",
       "superagent": "^8.0.2",
       "txo": "^0.0.21",
       "winston": "^3.3.3",

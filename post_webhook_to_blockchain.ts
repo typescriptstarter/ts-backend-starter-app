@@ -14,20 +14,16 @@ import { fetch } from 'powco'
 
 import { loadWallet } from 'stag-wallet'
 
-import { onchain } from './src/onchain'
+import { onchain } from 'stag-wallet'
 
 export default async function start() {
 
-  const val = {
-    web: 'hook'
-  }
-
-  const wallet = await loadWallet()
-
-  const { txid, txhex, txo } = await onchain(wallet).post({
+  const { txid, txhex, txo } = await onchain.post({
     app: 'alpha.powco.dev',
     key: 'github.webhook',
-    val
+    val: {
+      web: 'hook'
+    }
   })
 
   log.info('rabbi.actor.stag.onchain.post.result', { txid, txhex, txo })
