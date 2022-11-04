@@ -5,6 +5,10 @@ import { start as server } from './server'
 
 import { start as actors } from './rabbi/actors'
 
+import postAllWebhooksToBlockchain from '../post_all_webhooks_to_blockchain'
+
+var cron = require('node-cron');
+
 export async function start() {
 
   if (config.get('http_api_enabled')) {
@@ -18,6 +22,12 @@ export async function start() {
     actors();
 
   }
+
+  cron.schedule('* * * * *', async () => { // every minute
+
+    await postAllWebhooksToBlockchain() 
+
+  });
 
 }
 

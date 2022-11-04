@@ -121,10 +121,15 @@
 
 	(async () => {
 
-		const { data } = await axios.get('https://onchain.sv/api/v1/events?app=alpha.powco.dev&action=opened')
-		let { events } = data
+		const start_date = moment().subtract(1, 'week').unix() * 1000
 
-		console.log('EVENTS', events)
+		const { data } = await axios.get(`https://onchain.sv/api/v1/boostpow/rankings?app=alpha.powco.dev&action=opened&start_date=${start_date}`)
+
+		const { data: { events: unboosted } } = await axios.get('https://onchain.sv/api/v1/events?app=alpha.powco.dev&action=opened')
+
+		let { rankings: events } = data
+
+		events = [events, unboosted].flat()
 
 		const issues = events.filter(event => {
 
@@ -164,11 +169,12 @@
 		
 				return {
 					timestamp: luxon.DateTime.fromISO(event.content.issue?.created_at).toLocaleString(luxon.DateTime.DATETIME_MED),
-					title: event?.content?.issue?.url,
+					title: event?.content?.issue?.title,
 					content: event.content.content,
 					href: event?.content?.issue?.html_url,
 					content: content || event?.content?.issue?.body,
 					txid: event.txid,
+					difficulty: event.difficulty || 0,
 					image_url,
 				}
 			} catch(error) {

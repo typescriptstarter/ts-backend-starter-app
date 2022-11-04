@@ -73,9 +73,11 @@ export default async function start() {
 
   }
 
-  process.exit(0)
-
 }
 
-start()
+if (require.main === module) {
+
+  start()
+
+}
 

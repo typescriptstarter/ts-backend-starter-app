@@ -11,7 +11,8 @@
       "build": "tsc",
       "postbuild": "shebang-trim dist/bin/cli.js && chmod +x dist/bin/cli.js",
       "ci": "circleci local execute --job build",
-      "commit": "npx cz"
+      "commit": "npx cz",
+      "website:upload": "scp -r website/* root@powco.dev:/var/www/powco.dev"
    },
    "bin": {
       "rabbi": "./dist/bin/cli.js"

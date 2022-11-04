@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="POWCO.DEV PROOF OF WORK COLLECTIVE" />
 	<meta name="keywords" content="proofofwork" />
-	<meta name="author" content="1thedonald" />
+	<meta name="author" content="POWCO" />
 
 	<!-- 
 	//////////////////////////////////////////////////////
@@ -70,6 +70,14 @@
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/node-snackbar@latest/src/js/snackbar.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/node-snackbar@latest/dist/snackbar.min.css" />
 		
+	<script src="https://momentjs.com/downloads/moment.js"></script>
+
+	<style>
+		img {
+			max-width: 100%;
+			max-height: 200px;
+		}
+	</style>
 	</head>
 	<body>
 		
@@ -105,7 +113,8 @@
 		<div class="fh5co-entry padding homepage-links-item">
 			<img src="{{image_url}}" alt="{{image_alt}}">
 			<div>
-				<span class="fh5co-post-date"><a target="_blank" href="https://whatsonchain.com/tx/{{txid}}">{{timestamp}}</a></span>
+				<span class="fh5co-post-date"><a target="_blank" href="https://whatsonchain.com/tx/{{txid}}">{{timestamp}}</a> {{difficulty}} Difficulty
+				</span>
 				<h2><a target="_blank" href="{{href}}">{{title}}</a></h2>
 				<p>
 					<svg class='boost-button' data-txid="{{txid}}" style="float:left; width: 70px;">
@@ -143,8 +152,7 @@
 	<!-- jsSnackbar js/js-snackbar.min.js -->
 	<script src="https://bitcoinfileserver.com/48c4bfc4ac789f069869d2f8319678f9a3b31d4897519bccb21d25f4ac682977"></script>
 
-	<!-- jQuery -->
-	<!-- jQuery Easing js/jquery.min.js -->
+	<!-- jQuery js/jquery.min.js -->
 	<script src="https://bitcoinfileserver.com/3eae92b20a82d8862952b96212fddd0f7154b6220ee2ecbdc45c50a24fc62242"></script>
 
 
