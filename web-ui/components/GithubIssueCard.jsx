@@ -6,13 +6,13 @@ import BoostButton from './BoostButton'
 
 const GithubIssueCard = (props) => {
     const { txid } = props
-    const {issue, organization, repository, sender} = props.content
-    
+    const {issue, organization, repository, sender} = props.content    
 
     const handleComment = (e) => {
       e.preventDefault()
       window.open(issue.html_url)
     }
+
   return (
     <div className='grid grid-cols-12 bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 hover:dark:bg-gray-500 mt-0.5 first:rounded-t-lg'>
         <div className='col-span-12 flex items-center '>
@@ -40,12 +40,12 @@ const GithubIssueCard = (props) => {
                             {sender.login}
                         </a>
                         <div className='grow'/>
-                        <a target="_blank" rel="noreferrer" href={issue.html_url} className='text-xs leading-5 whitespace-nowrap text-gray-500 dark:text-gray-300 hover:text-gray-700 hover:dark:text-gray-500'>
-                            {moment(issue.created_at).fromNow()}
+                        <a target="_blank" rel="noreferrer" href={issue?.html_url} className='text-xs leading-5 whitespace-nowrap text-gray-500 dark:text-gray-300 hover:text-gray-700 hover:dark:text-gray-500'>
+                            {moment(issue?.created_at).fromNow()}
                         </a>
                     </div>
                     <div className='mt-1 text-gray-900 dark:text-white text-base leading-6 whitespace-pre-line break-words'>
-                        {issue.body}
+                        {issue?.body}
                     </div>
                     <div className='ml-1'>
                 <div className='grid grid-cols-12 gap-4 w-full'>
@@ -63,10 +63,10 @@ const GithubIssueCard = (props) => {
                       ></path>
                     </svg>
                     <p className="text-gray-500 dark:text-gray-300 group-hover:text-green-500">
-                        {issue.comments}
+                        {issue?.comments}
                       </p>
                   </div>
-                  <BoostButton tx_id={txid} difficulty={0}/>
+                  <BoostButton tx_id={txid} difficulty={props.difficulty || 0}/>
                 </div>
               </div>
                 </div>

@@ -9,7 +9,7 @@ import { useBitcoin } from '../context/BitcoinContext';
 
 const SideBarDrawer = () => {
     const { theme, setTheme } = useTheme()
-    const { authenticated, setWallet, auhtenticate, avatar, paymail } = useBitcoin()
+    const { authenticated, setWallet, authenticate, avatar, paymail } = useBitcoin()
     const [walletPopupOpen, setWalletPopupOpen] = useState(false);
 
     const toggleTheme =  () => {

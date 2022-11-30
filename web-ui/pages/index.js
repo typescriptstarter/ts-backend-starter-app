@@ -6,10 +6,23 @@ import { useOnchain } from "../hooks/useOnchain";
 
 const Index = () => {
   const { startTimestamp } = useTuning();
-  let { data, error, refresh, loading } = useOnchain(`/events`); // , `?limit=21`
+  let { data:events, error:error_events, refresh, loading:loading_events } = useOnchain(`/events`); // , `?limit=21`
   //let { data: recent } = useAPI("/recent/questions?limit=100");
+  let { data:rankings, error:error_rankings, loading: loading_rankings} = useOnchain('/boostpow/rankings')
 
-  return <Dashboard data={data} error={error} loading={loading} />;
+  let issues = []
+  if(events && rankings){
+
+    issues = [...rankings.rankings,...events.events]
+    issues.map((issue) => {
+      if(issue.content.action !== "opened"){
+        return issue
+      }
+    })
+
+  }
+
+  return <Dashboard data={issues} error={error_events || error_rankings} loading={loading_events || loading_rankings} />;
 };
 
 export default Index;
