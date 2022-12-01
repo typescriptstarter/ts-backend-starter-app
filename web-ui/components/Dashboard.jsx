@@ -22,7 +22,6 @@ function ago(period) {
 }
 
 const Dashboard = ({ data, error, loading }) => {
-  console.log(data);
   //const [issues, setIssues] = useState([]);
   const router = useRouter();
   const { authenticated } = useBitcoin();
@@ -37,14 +36,17 @@ const Dashboard = ({ data, error, loading }) => {
       </ThreeColumnLayout>
     );
   }
+  if(error){
+    return (
+      <ThreeColumnLayout>
+        <div className="min-h-screen py-5">
+          Error
+        </div>
+      </ThreeColumnLayout>
+    )
+  }
 
-  let { events } = data;
-
-  let issues = events.map((e) => {
-    if (e.content.action === "opened") {
-      return e;
-    }
-  });
+  
   //console.log(issues);
 
   return (
@@ -52,7 +54,7 @@ const Dashboard = ({ data, error, loading }) => {
       <div className="col-span-12 lg:col-span-6 min-h-screen">
         <div className="w-full py-5">
           <div className="relative">
-            {issues?.map((entry) => {
+            {data?.map((entry) => {
               if (entry) {
                 return <GithubIssueCard key={entry.txid} {...entry} />;
               }

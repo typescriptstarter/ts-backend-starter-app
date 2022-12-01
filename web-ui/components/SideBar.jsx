@@ -144,13 +144,13 @@ const SideBar = () => {
                 </div>
             </Link>
         </div>
-        {authenticated && <Link href="/compose">
+        {/* {authenticated && <Link href="/compose">
             <button 
                 className='-ml-24 hidden xl:flex text-sm leading-4 text-white font-semibold w-fit mt-4 mb-6 border-none rounded-md bg-gradient-to-tr from-blue-400 to-blue-500 cursor-pointer items-center text-center justify-center py-2 px-5 transition duration-500 transform hover:-translate-y-1'
             >
                 Create Post
             </button>
-        </Link>}
+        </Link>} */}
         <div className='grow'/>
         <div className='initial xl:hidden mb-6'>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 hover:text-gray-700  hover:dark:text-gray-300 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
