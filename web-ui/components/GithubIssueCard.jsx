@@ -47,9 +47,9 @@ const GithubIssueCard = (props) => {
                         {issue?.body}
                     </div>
                     <div className='ml-1'>
-                <div className='grid grid-cols-12 gap-4 w-full'>
-                  <div className='col-span-5'/>
-                  <div onClick={handleComment} className='col-span-3 flex group items-center w-fit relative'>
+                <div className='flex w-full'>
+                  <div className='grow'/>
+                  <div onClick={handleComment} className='min-w-[111px] justify-center flex group items-center w-fit relative'>
                     <svg
                       viewBox="0 0 40 40"
                       fill="none"
