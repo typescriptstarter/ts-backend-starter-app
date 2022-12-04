@@ -14,3 +14,4 @@ get402.json
 dist/
 .rabbi/config.json
 .runcache/
+web-ui/.next/

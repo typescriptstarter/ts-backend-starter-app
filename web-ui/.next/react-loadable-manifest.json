@@ -1,52 +1,52 @@
 {
-  "..\\components\\ChatLayout.jsx -> ./Header": {
-    "id": "..\\components\\ChatLayout.jsx -> ./Header",
+  "../components/ChatLayout.jsx -> ./Header": {
+    "id": "../components/ChatLayout.jsx -> ./Header",
     "files": []
   },
-  "..\\components\\ChatLayout.jsx -> ./SideBar": {
-    "id": "..\\components\\ChatLayout.jsx -> ./SideBar",
+  "../components/ChatLayout.jsx -> ./SideBar": {
+    "id": "../components/ChatLayout.jsx -> ./SideBar",
     "files": [
       "static/chunks/components_SideBar_jsx.js"
     ]
   },
-  "..\\components\\ChatLayout.jsx -> ./SidebarTuning": {
-    "id": "..\\components\\ChatLayout.jsx -> ./SidebarTuning",
+  "../components/ChatLayout.jsx -> ./SidebarTuning": {
+    "id": "../components/ChatLayout.jsx -> ./SidebarTuning",
     "files": [
       "static/chunks/components_SidebarTuning_jsx.js"
     ]
   },
-  "..\\components\\NotificationsLayout.jsx -> ./Header": {
-    "id": "..\\components\\NotificationsLayout.jsx -> ./Header",
+  "../components/NotificationsLayout.jsx -> ./Header": {
+    "id": "../components/NotificationsLayout.jsx -> ./Header",
     "files": []
   },
-  "..\\components\\NotificationsLayout.jsx -> ./SideBar": {
-    "id": "..\\components\\NotificationsLayout.jsx -> ./SideBar",
+  "../components/NotificationsLayout.jsx -> ./SideBar": {
+    "id": "../components/NotificationsLayout.jsx -> ./SideBar",
     "files": [
       "static/chunks/components_SideBar_jsx.js"
     ]
   },
-  "..\\components\\PanelLayout.jsx -> ./Header": {
-    "id": "..\\components\\PanelLayout.jsx -> ./Header",
+  "../components/PanelLayout.jsx -> ./Header": {
+    "id": "../components/PanelLayout.jsx -> ./Header",
     "files": []
   },
-  "..\\components\\PanelLayout.jsx -> ./SideBar": {
-    "id": "..\\components\\PanelLayout.jsx -> ./SideBar",
+  "../components/PanelLayout.jsx -> ./SideBar": {
+    "id": "../components/PanelLayout.jsx -> ./SideBar",
     "files": [
       "static/chunks/components_SideBar_jsx.js"
     ]
   },
-  "..\\components\\ThreeColumnLayout.jsx -> ./Header": {
-    "id": "..\\components\\ThreeColumnLayout.jsx -> ./Header",
+  "../components/ThreeColumnLayout.jsx -> ./Header": {
+    "id": "../components/ThreeColumnLayout.jsx -> ./Header",
     "files": []
   },
-  "..\\components\\ThreeColumnLayout.jsx -> ./SideBar": {
-    "id": "..\\components\\ThreeColumnLayout.jsx -> ./SideBar",
+  "../components/ThreeColumnLayout.jsx -> ./SideBar": {
+    "id": "../components/ThreeColumnLayout.jsx -> ./SideBar",
     "files": [
       "static/chunks/components_SideBar_jsx.js"
     ]
   },
-  "..\\components\\ThreeColumnLayout.jsx -> ./SidebarTuning": {
-    "id": "..\\components\\ThreeColumnLayout.jsx -> ./SidebarTuning",
+  "../components/ThreeColumnLayout.jsx -> ./SidebarTuning": {
+    "id": "../components/ThreeColumnLayout.jsx -> ./SidebarTuning",
     "files": [
       "static/chunks/components_SidebarTuning_jsx.js"
     ]
