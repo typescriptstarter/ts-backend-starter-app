@@ -124,7 +124,7 @@ export async function start() {
       },
       schemes: ['https'],
       host: 'powco.dev',
-      documentationPath: '/',
+      documentationPath: '/api',
       grouping: 'tags'
     }
 
