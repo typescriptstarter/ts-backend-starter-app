@@ -7,7 +7,6 @@ import BoostButton from './BoostButton'
 const GithubIssueCard = (props) => {
     const { txid } = props
     const {issue, organization, repository, sender} = props.content    
-
     const handleComment = (e) => {
       e.preventDefault()
       window.open(issue.html_url)
@@ -17,7 +16,7 @@ const GithubIssueCard = (props) => {
     <div className='grid grid-cols-12 bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 hover:dark:bg-gray-500 mt-0.5 first:rounded-t-lg'>
         <div className='col-span-12 flex items-center '>
             {/* <p className='p-4 text-sm italic text-gray-500 hover:underline'><a target="_blank" rel="noreferrer" href={repository.html_url}>{organization.login} /{repository.name}</a></p> */}
-            <p className='p-4 text-sm italic text-gray-500'>
+            <p className='p-4 text-sm italic text-gray-600 dark:text-gray-300'>
               <Link href={`/org/${organization.login}`}>
                 <span className='hover:underline cursor-pointer'>{organization.login}</span>
               </Link>
@@ -30,17 +29,17 @@ const GithubIssueCard = (props) => {
         <div className='col-span-12'>
             <div className='mb-0.5 px-4 pt-4 pb-1 grid items-start grid-cols-12 max-w-screen cursor-pointer'>
                 <div className='col-span-1'>
-                    <a>
+                    <a target="_blank" rel='noreferrer' href={sender.html_url}>
                         <UserIcon src={sender.avatar_url} size={46}/>
                     </a>
                 </div>
                 <div className='col-span-11 ml-6'>
                     <div className='flex'>
-                        <a target="_blank" rel='noreferrer' href={sender.html_url} className='text-base leading-4 font-bold text-gray-900 dark:text-white cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis	hover:underline'>
-                            {sender.login}
+                        <a target="_blank" rel='noreferrer' href={issue?.html_url} className='text-base leading-4 font-bold text-gray-900 dark:text-white cursor-pointer overflow-hidden text-ellipsis	hover:underline'>
+                            {issue.title}
                         </a>
                         <div className='grow'/>
-                        <a target="_blank" rel="noreferrer" href={issue?.html_url} className='text-xs leading-5 whitespace-nowrap text-gray-500 dark:text-gray-300 hover:text-gray-700 hover:dark:text-gray-500'>
+                        <a target="_blank" rel="noreferrer" href={`https://whatsonchain.com/tx/${txid}`} className='ml-2 text-xs leading-5 whitespace-nowrap text-gray-500 dark:text-gray-300 hover:text-gray-700 hover:dark:text-gray-500'>
                             {moment(issue?.created_at).fromNow()}
                         </a>
                     </div>
