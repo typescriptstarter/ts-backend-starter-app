@@ -7,6 +7,10 @@ import * as Boom from 'boom'
 
 import { notifyIssueOpened } from '../../rocketchat'
 
+import { onchain } from 'stag-wallet'
+
+const axios = require('axios')
+
 async function onWebhookCreate(payload)  {
 
   if (payload.event === 'opened' && payload.issue) {
@@ -25,7 +29,34 @@ export async function create(req, h) {
 
   try {
 
-    await models.GithubWebhook.create({ payload })
+    const webhook = await models.GithubWebhook.create({ payload })
+
+    (async () => {
+
+      if (!webhook.payload.issue) {
+        return
+      }
+  
+      if (!webhook.tx_id) {
+  
+        const { txid, txhex, txo } = await onchain.post({
+          app: 'alpha.powco.dev',
+          key: 'github.webhook',
+          val: webhook.payload
+        })
+  
+        log.info('rabbi.actor.stag.onchain.post.result', { txid, txhex, txo })
+  
+        webhook.tx_id = txid
+  
+        await webhook.save()
+  
+      }
+  
+      await axios.get(`https://onchain.sv/api/v1/events/${webhook.tx_id}`)
+  
+
+    })()
 
     log.info('github.webhook.created', { payload })
 
