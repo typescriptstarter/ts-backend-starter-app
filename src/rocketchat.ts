@@ -18,15 +18,15 @@ interface IssueWebhook {
   }
 }
 
-const http = require("superagent");
-
 const base = 'https://chat.21e8.tech/hooks';
+
+import axios from 'axios'
 
 const channels = {
   'powco-development': config.get('rocketchat_channel')
 }
 
-export function notify(channel, message: string) {
+export async function notify(channel, message: string) {
 
   if (!channels[channel]) {
     log.info(`rocketchat channel ${channel} not found`);
@@ -35,19 +35,12 @@ export function notify(channel, message: string) {
 
   log.info(`notify slack ${message}`);
 
-  http
-    .post(`${base}/${channels[channel]}`)
-    .send({
-      text: message
-    })
-    .end((error, response) => {
-      if (error) {
-        console.log('error', error)
-        log.error("rocketchat.error", error.message);
-      } else {
-        log.info("rocketchat.notified", response.body);
-      }
-    });
+  const { data } = await axios.post(`${base}/${channels[channel]}`, {
+    text: message
+  })
+
+  return data
+
 }
 
 export async function notifyIssueOpened(webhook: any) {

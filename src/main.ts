@@ -7,6 +7,10 @@ import { start as actors } from './rabbi/actors'
 
 import postAllWebhooksToBlockchain from '../post_all_webhooks_to_blockchain'
 
+import { syncAllIssuesToBlockchain, syncAllReposToBlockchainForever } from './github'
+
+import delay from 'delay'
+
 var cron = require('node-cron');
 
 export async function start() {
@@ -28,6 +32,35 @@ export async function start() {
     await postAllWebhooksToBlockchain() 
 
   });
+
+
+  (async () => {
+
+    while (true) {
+
+      try {
+
+        console.log('syncing new issues to blockchain')
+
+        const results = await syncAllIssuesToBlockchain()
+
+        for (let item of results) {
+  
+          console.log('issue.synced', item)
+        }
+
+      } catch(error) {
+
+        console.error('error syncing issues to blockchain', error)
+
+      }
+
+      await delay(5200)
+    }
+
+  })();
+
+  syncAllReposToBlockchainForever({ org: 'pow-co' })
 
 }
 
