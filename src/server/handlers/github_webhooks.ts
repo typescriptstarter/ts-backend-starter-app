@@ -8,6 +8,7 @@ import * as Boom from 'boom'
 import { notifyIssueOpened } from '../../rocketchat'
 
 import { onchain } from 'stag-wallet'
+import { handleWebhook } from '../../webhooks'
 
 const axios = require('axios')
 
@@ -27,9 +28,11 @@ export async function create(req, h) {
 
   log.info('api.github.webhook.create', { payload })
 
+  handleWebhook(payload)
+
   try {
 
-    const webhook = await models.GithubWebhook.create({ payload })
+    const webhook = await models.GithubWebhook.create({ payload });
 
     (async () => {
 
