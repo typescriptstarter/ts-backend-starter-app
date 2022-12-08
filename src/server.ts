@@ -106,6 +106,18 @@ server.route({
   }
 })
 
+server.route({
+  method: 'GET',
+  path: '/api/v1/github/issues/{org}/{repo}',
+  handler: handlers.GithubIssues.repo,
+  options: {
+    description: 'List all issues for github repo',
+    tags: ['api', 'github', 'issues']
+  }
+})
+
+
+
 var started = false
 
 export async function start() {

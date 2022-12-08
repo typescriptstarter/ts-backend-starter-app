@@ -7,8 +7,11 @@
     "test": "jest",
     "commit": "npx cz",
     "build": "next build",
+    "export": "next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "scp": "scp -r out/* root@powco.dev:/var/www/powco.dev",
+    "deploy": "npm run build && npm run export && npm run scp"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.6",
