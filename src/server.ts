@@ -126,37 +126,34 @@ export async function start() {
 
   started = true
 
-  if (config.get('swagger_enabled')) {
-
-    const swaggerOptions = {
-      info: {
-        title: 'API Docs',
-        version: Pack.version,
-        description: 'Developer API Documentation \n\n *** DEVELOPERS *** \n\n Edit this file under `swaggerOptions` in `src/server.ts` to better describe your service.'
-      },
-      schemes: ['https'],
-      host: 'powco.dev',
-      documentationPath: '/api',
-      grouping: 'tags'
-    }
-
-    const Inert = require('@hapi/inert');
-
-    const Vision = require('@hapi/vision');
-
-    const HapiSwagger = require('hapi-swagger');
-
-    await server.register([
-        Inert,
-        Vision,
-        {
-          plugin: HapiSwagger,
-          options: swaggerOptions
-        }
-    ]);
-
-    log.info('server.api.documentation.swagger', swaggerOptions)
+  const swaggerOptions = {
+    info: {
+      title: 'API Docs',
+      version: Pack.version,
+      description: 'Developer API Documentation \n\n *** DEVELOPERS *** \n\n Edit this file under `swaggerOptions` in `src/server.ts` to better describe your service.'
+    },
+    schemes: ['https'],
+    host: 'powco.dev',
+    documentationPath: '/api',
+    grouping: 'tags'
   }
+
+  const Inert = require('@hapi/inert');
+
+  const Vision = require('@hapi/vision');
+
+  const HapiSwagger = require('hapi-swagger');
+
+  await server.register([
+      Inert,
+      Vision,
+      {
+        plugin: HapiSwagger,
+        options: swaggerOptions
+      }
+  ]);
+
+  log.info('server.api.documentation.swagger', swaggerOptions)
 
   await server.start();
 

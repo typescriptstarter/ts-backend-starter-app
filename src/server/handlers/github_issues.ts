@@ -5,17 +5,25 @@ import { listIssues } from '../../github'
 
 import * as Boom from 'boom'
 
+import models from '../../models'
+
 export async function index(req, h) {
 
-  const { params } = req
+  const { params, query } = req
 
   log.info('api.github.issues.list', { params })
 
   try {
 
-    const issues = await listIssues({ org: 'pow-co', repo: 'powco-dev' })
+    const where = {...params, ...query}
 
-    return issues
+    console.log({ where })
+
+    const issues = await models.GithubIssue.findAll({
+      where
+    })
+
+    return { issues }
 
   } catch(error) {
 
@@ -29,16 +37,22 @@ export async function index(req, h) {
 
 export async function repo(req, h) {
 
-  const { params } = req
+  const { params, query } = req
 
   log.info('api.github.issues.repo', { params })
 
   try {
 
-    const issues = await listIssues(params)
+    const where = {...params, ...query}
 
-    return issues
+    console.log({ where })
 
+    const issues = await models.GithubIssue.findAll({
+      where
+    })
+
+    return { issues }
+    
   } catch(error) {
 
     log.error('github.issues.list', error)

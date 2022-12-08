@@ -9,8 +9,7 @@ import * as models from './models'
 
 import { Op } from 'sequelize'
 
-//import { onchain } from 'stag-wallet'
-import { onchain } from '/Users/zyler/github/stagwallet/stag-wallet'
+import { onchain } from 'stag-wallet'
 
 import delay from 'delay'
 
