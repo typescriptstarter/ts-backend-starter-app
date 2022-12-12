@@ -74,12 +74,17 @@ export async function show(req, h) {
 
             console.log(record)
 
-            return {
-                difficulty: record.boostpow_proofs.reduce((sum, proof) => sum + proof.difficulty, 0),
+            const difficulty = record.boostpow_proofs.reduce((sum, proof) => sum + proof.difficulty, 0)
+
+            const json = record.toJSON() 
+            delete json.boostpow_proofs
+
+            return Object.assign(record.toJSON(), {
+                difficulty,
                 title: record.data.title,
                 state: record.state,
                 txid: record.txid
-            }
+            })
         })
         .sort((a, b) => a.difficulty < b.difficulty ? 1 : -1)
 

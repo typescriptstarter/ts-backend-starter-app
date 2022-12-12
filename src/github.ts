@@ -37,9 +37,50 @@ export async function listRepos({org}: {org: string }): Promise<any> {
 
 export async function importRepoIssues({ org, repo }: any): Promise<any> {
 
+  console.log('importRepoIssues', { org, repo })
+
   const issues = await listIssues({ org, repo })
 
   const result = []
+
+  const issuesMap = issues.reduce((map, issue) => {
+    map[parseInt(issue.id)] = issue
+    return map
+  }, {})
+
+  const existingIssues = await models.GithubIssue.findAll({
+
+    where: {
+
+      state: 'open',
+
+      repo,
+  
+      org
+
+    }
+
+  })
+
+  //console.log('existingIssues', existingIssues.length)
+
+  for (let existingIssue of existingIssues) {
+
+    console.log(existingIssue.toJSON())
+
+    if (!issuesMap[existingIssue.issue_id.toString()]) {
+
+      console.log('--closing issue', existingIssue.issue_id)
+
+      existingIssue.state = 'closed'
+
+      const result = await existingIssue.save()
+
+      console.log('CLOSE RESULT', result.toJSON())
+
+    }
+
+  }
 
   for (let issue of issues) {
 
@@ -150,7 +191,7 @@ export async function syncIssueToBlockchain(issue): Promise<[any, boolean]> {
     await issue.save()
   
   }
-  
+
   return [issue, isNew]
 
 }
