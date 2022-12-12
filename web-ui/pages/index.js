@@ -23,7 +23,7 @@ const Index = () => {
   let boosted_tx = boosted?.map((e) => {
     return e?.txid;
   });
-  let unboosted = events?.events.map((issue) => {
+  let unboosted = events?.events?.map((issue) => {
     if (issue.content.action === "opened") {
       return issue;
     }
