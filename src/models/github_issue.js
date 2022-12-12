@@ -11,6 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
+      models.BoostPowProof.hasOne(models.GithubIssue, {
+        as: 'issue',
+        foreignKey: 'txid',
+        sourceKey: 'content'
+      })
+
+      models.GithubIssue.hasMany(models.BoostPowProof, {
+        as: 'boostpow_proofs',
+        foreignKey: 'content',
+        sourceKey: 'txid'
+      })
     }
   }
   GithubIssue.init({

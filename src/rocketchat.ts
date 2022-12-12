@@ -51,8 +51,6 @@ export async function notifyIssueOpened(webhook: any) {
 
       const message = `${webhook.issue.user.login} opened an issue on ${webhook.repository.full_name}:\n\n"${webhook.issue.title}"\n\n${webhook.issue.url}`
 
-      console.log(message)
-
       await notify('powco-development', message)
 
       log.info('github.issue.opened.notified', {message})

@@ -29,8 +29,6 @@ program
   .command('echo <statement>')
   .action((statement) => {
 
-    console.log({ statement })
-
     process.exit(0)
 
   })

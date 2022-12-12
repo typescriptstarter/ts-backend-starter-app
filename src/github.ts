@@ -81,10 +81,22 @@ export async function importRepoIssues({ org, repo }: any): Promise<any> {
 
 }
 
+async function findOne(issue_id: number) {
+
+  const url = `https://onchain.sv/api/v1/events?app=powco.dev&id=${issue_id}&type=github.issue`
+
+  const { data } = await axios.get(url)
+
+  return data.events[0]
+
+}
+
 export async function syncIssueToBlockchain(issue): Promise<[any, boolean]> {
 
+  console.log({ issue_id: issue.issue_id})
 
-  console.log('onchain find or create', {
+
+  log.debug('onchain.findOrCreate', {
     where: {
       app: 'powco.dev',
       type: 'github.issue',
@@ -99,39 +111,46 @@ export async function syncIssueToBlockchain(issue): Promise<[any, boolean]> {
     }
   })
 
-  const [result, isNew] = await onchain.findOrCreate({
-    where: {
-      app: 'powco.dev',
-      type: 'github.issue',
-      content: {
-        id: issue.issue_id
-      }
-    },
-    defaults: {
+  var isNew = false
+
+  var result = await findOne(issue.issue_id)
+
+  if (!result) {
+
+    isNew=  true
+
+    result = await onchain.post({
       app: 'powco.dev',
       key: 'github.issue',
-      val: issue.data
-    }
-  })
+      val: Object.assign(issue.data, {
+        id: issue.issue_id
+      })
+    })
+
+  }
+
+  console.log('__RESULT__', { result, isNew })
 
   if (isNew) {
 
     console.log('posted to blockchain', result)
 
-    if (!issue.data.user.login.match('dependabot')) {
+    if (!issue.data.user.login.match('dependabot') && process.env.NODE_ENV === 'production') {
 
       notify('powco-development', `${issue.data.user.login} created a new github issue for ${issue.data.url}\n\n${issue.data.title}\n\n${issue.data.body}`)
       .then(result => console.log('rocketchat.notified', result)).catch(error => console.error('rocketchat.notify.error', error))
     }
 
-
-
   }
 
-  issue.txid = result.txid
+  if (!issue.txid) {
 
-  await issue.save()
+    issue.txid = result.txid
 
+    await issue.save()
+  
+  }
+  
   return [issue, isNew]
 
 }
@@ -151,7 +170,7 @@ export async function syncAllIssuesToBlockchain() {
 
   const results = []
 
-  for (let issue of issuesNotOnBlockchain) {
+  for (let issue of shuffle(issuesNotOnBlockchain)) {
 
     const [result, isNew] = await syncIssueToBlockchain(issue)
 

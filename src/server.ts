@@ -116,6 +116,36 @@ server.route({
   }
 })
 
+server.route({
+  method: 'GET',
+  path: '/api/v1/boostpow/rankings/github/issues/{org}/{repo}',
+  handler: handlers.Rankings.show,
+  options: {
+    description: 'List all issues for github repo by boostpow ranking',
+    tags: ['api', 'github', 'issues', 'boostpow']
+  }
+})
+
+server.route({
+  method: 'GET',
+  path: '/api/v1/boostpow/rankings/github/issues/{org}',
+  handler: handlers.Rankings.show,
+  options: {
+    description: 'List all issues for github repo by boostpow ranking',
+    tags: ['api', 'github', 'issues', 'boostpow']
+  }
+})
+
+server.route({
+  method: 'GET',
+  path: '/api/v1/boostpow/rankings/github/issues',
+  handler: handlers.Rankings.show,
+  options: {
+    description: 'List all issues for github repo by boostpow ranking',
+    tags: ['api', 'github', 'issues', 'boostpow']
+  }
+})
+
 
 
 var started = false

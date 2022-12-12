@@ -9,6 +9,8 @@ import postAllWebhooksToBlockchain from '../post_all_webhooks_to_blockchain'
 
 import { syncAllIssuesToBlockchain, syncAllReposToBlockchainForever } from './github'
 
+import { run as syncPowco } from './import_powco_work'
+
 import delay from 'delay'
 
 var cron = require('node-cron');
@@ -33,34 +35,51 @@ export async function start() {
 
   });
 
-
   (async () => {
 
     while (true) {
 
-      try {
+      await syncPowco()
 
-        console.log('syncing new issues to blockchain')
+      await delay(10_000)
 
-        const results = await syncAllIssuesToBlockchain()
-
-        for (let item of results) {
-  
-          console.log('issue.synced', item)
-        }
-
-      } catch(error) {
-
-        console.error('error syncing issues to blockchain', error)
-
-      }
-
-      await delay(5200)
     }
+
 
   })();
 
-  syncAllReposToBlockchainForever({ org: 'pow-co' })
+
+  (async () => {
+
+    if (false ) {
+
+      while (true) {
+
+        try {
+
+          console.log('syncing new issues to blockchain')
+
+          const results = await syncAllIssuesToBlockchain()
+
+          for (let item of results) {
+    
+            console.log('issue.synced', item)
+          }
+
+        } catch(error) {
+
+          console.error('error syncing issues to blockchain', error)
+
+        }
+
+        await delay(5200)
+      }
+    }
+
+    syncAllReposToBlockchainForever({ org: 'pow-co' })
+
+  })();
+
 
 }
 
