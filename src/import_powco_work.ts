@@ -13,6 +13,8 @@ import { log } from './log'
 
 import delay from 'delay'
 
+import { stream } from 'powco'
+
 export async function run() {
 
   log.info('crawlers.import_powco_work.start')
@@ -34,6 +36,18 @@ export async function run() {
   const limit = 25
 
   let offset = 0
+
+  stream.on('boostpow.proof', async (proof) => {
+    console.log('boostpow.proof.discovered', proof)
+
+    const result = await importProofsFromTxId({ tx_id: proof.txid })
+
+    console.log('boostpow.proof.imported', result)
+  })
+
+  stream.on('boostpow.job', async (job) => {
+    console.log('boostpow.job.discovered', job)
+  })
 
   while (true) {
 
