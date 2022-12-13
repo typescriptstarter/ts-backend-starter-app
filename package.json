@@ -39,7 +39,7 @@
       "powco": "^1.2.0",
       "prom-client": "^14.0.1",
       "prompt-async": "^0.9.9",
-      "rabbi": "^1.19.4",
+      "rabbi": "^1.20.3",
       "sequelize": "^6.25.3",
       "stag-wallet": "^0.2.0",
       "superagent": "^8.0.2",

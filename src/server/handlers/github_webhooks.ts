@@ -10,6 +10,8 @@ import { notifyIssueOpened } from '../../rocketchat'
 import { onchain } from 'stag-wallet'
 import { handleWebhook } from '../../webhooks'
 
+import { publish } from 'rabbi'
+
 const axios = require('axios')
 
 async function onWebhookCreate(payload)  {
@@ -33,6 +35,8 @@ export async function create(req, h) {
   try {
 
     const webhook = await models.GithubWebhook.create({ payload });
+
+    publish('powco.dev', 'github.webhook.created', webhook.toJSON())
 
     (async () => {
 
