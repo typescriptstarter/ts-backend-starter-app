@@ -13,7 +13,9 @@ export async function show(req, h) {
 
     const where = {}
 
-    const issuesWhere = {}
+    const issuesWhere = {
+      state: 'open'
+    }
 
     if (req.params.org) {
         issuesWhere['org'] = req.params.org
