@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useRef} from 'react'
 import { toast } from 'react-toastify'
 import { useBitcoin } from '../context/BitcoinContext'
 import axios from 'axios'
@@ -6,8 +6,11 @@ import axios from 'axios'
 import { wrapRelayx } from 'stag-relayx'
 import { useRelay } from '../context/RelayContext'
 
+import Drawer from "./Drawer"
+import SuperBoostPopup from './SuperBoostPopup'
 
-const SuccessSnackbar = (props) => {
+
+export const SuccessSnackbar = (props) => {
   return (<div
     className="mx-2 sm:mx-auto max-w-sm  flex flex-row items-center justify-between bg-green-200 p-3 text-sm leading-none font-medium rounded-xl whitespace-no-wrap">
     <div className="inline-flex items-center text-green-500">
@@ -24,7 +27,7 @@ const SuccessSnackbar = (props) => {
   </div>)
 }
 
-const ErrorSnackbar = (props) => {
+export const ErrorSnackbar = (props) => {
   console.log(props)
   return (
     <div
@@ -43,8 +46,20 @@ const ErrorSnackbar = (props) => {
 
 const BoostButton = ({ tx_id, zenMode, difficulty }) => {
   const { relayOne } = useRelay()
+  const { authenticated } = useBitcoin()
+  const [action, setAction] = useState("")
+  const [superBoost, setSuperBoost] = useState(false)
+  const [boostPopupOpen, setBoostPopupOpen] = useState(false)
+  const timerRef = useRef();
+  const isLongPress = useRef();
+  const superBoostLoading = useRef();
+
+
   //const { boost } = useBitcoin()
 const boost = async (contentTxid) => {
+  if(!authenticated){
+    throw new Error("please, log in!")
+  }
   const stag = wrapRelayx(relayOne)
   const {txid, txhex, job} = await stag.boost.buy({
     content: contentTxid,
@@ -65,20 +80,18 @@ const boost = async (contentTxid) => {
 
   return {txid, txhex, job}
   
-  
 }
 
 
 
-const handleBoost = async (e) => {
-  e.stopPropagation()
-  e.preventDefault()
-
-
-  const value = 0.05
-  const currency="USD"
-
+const handleBoost = async () => {
   
+
+
+  try {
+
+    console.log("handleboost",action)
+    if(action === "click"){
 
 
       let {txid, txhex, job} = await toast.promise(boost(tx_id), {
@@ -96,10 +109,11 @@ const handleBoost = async (e) => {
           icon:false
         }
       }, {
-      position: "top-center",
+      position: "bottom-right",
       autoClose: 5000,
-      hideProgressBar: false,
+      hideProgressBar: true,
       closeOnClick: true,
+      closeButton: false,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
@@ -107,23 +121,123 @@ const handleBoost = async (e) => {
       })
 
       console.log('bitcoin.boost.result', {txid, txhex,job});
+
+    }
+
+    if (action==="longpress"){
+
+      console.log("superboost canceled")
+
+      return
+
+    }
+
+    if(action==="superboost"){
+
+      console.log("superboost trigered")
+
+      return
+    }
+    
+  } catch (error) {
+    console.log(error)
+  }
+  
+
 }
+
+function startPressTimer() {
+  isLongPress.current = false;
+  setAction("")
+
+  timerRef.current = setTimeout(() => {
+    isLongPress.current = true;
+    setSuperBoost(true)
+    setAction('longpress');
+  }, 690)
+
+  superBoostLoading.current = setTimeout(() => {
+    if(!isLongPress.current){
+      return
+    }
+    superBoostLoading.current = true
+    setAction("superBoost")
+    setBoostPopupOpen(true)
+    setSuperBoost(false)
+  }, 2180)
+}
+
+function handleOnMouseDown(e) {
+  e.preventDefault()
+  e.stopPropagation()
+  if(boostPopupOpen){
+    return
+  }
+  console.log('handleOnMouseDown');
+  startPressTimer();
+  setAction("click")
+}
+
+function handleOnMouseUp(e) {
+  e.preventDefault()
+  e.stopPropagation()
+  console.log('handleOnMouseUp');
+  setSuperBoost(false)
+  clearTimeout(timerRef.current);
+  clearTimeout(superBoostLoading.current)
+}
+
+function handleOnTouchStart(e) {
+  e.preventDefault()
+  e.stopPropagation()
+  if(boostPopupOpen){
+    return
+  }
+  console.log('handleOnTouchStart');
+  startPressTimer();
+  setAction("click")
+  handleBoost(e)
+}
+
+function handleOnTouchEnd(e) {
+  e.preventDefault()
+  e.stopPropagation()
+  console.log('handleOnTouchEnd');
+  setSuperBoost(false)
+  clearTimeout(timerRef.current);
+  clearTimeout(superBoostLoading.current)
+  /* if ( action === 'longpress' ) return;
+  console.log('handleOnTouchEnd');
+  clearTimeout(timerRef.current); */
+
+}
+
   return (
-    <div onClick={handleBoost} className={`flex group items-center w-fit relative`}>
-        <div className={`hidden group-hover:block animate-ping absolute ${zenMode ? "justify-center":"left-[18px]"} min-h-[33px] min-w-[33px] rounded-full bg-blue-200`}></div>
-        <div className={`hidden group-hover:block animate-ping  delay-75 absolute ${zenMode ? "justify-center":"left-[24px]"} min-h-[22px] min-w-[22px] rounded-full bg-blue-400`}></div>
-        <div className={`hidden group-hover:block animate-ping  delay-100 absolute ${zenMode ? "justify-center":"left-[29px]"} min-h-[11px] min-w-[11px] rounded-full bg-blue-600`}></div>
-        <svg viewBox='0 0 65 65' className='relative min-h-[69px] min-w-[69px] stroke-1 stroke-gray-500 dark:stroke-gray-300 rounded-full group-hover:stroke-blue-500'>
-            <path
-                d="M40.1719 32.6561C40.1719 35.6054 38.5079 38.1645 36.0692 39.4499C35.002 40.0122 33.7855 36.2423 32.4945 36.2423C31.1288 36.2423 29.8492 40.0696 28.7418 39.4499C26.4007 38.1359 24.8228 35.5308 24.8228 32.6561C24.8228 28.4214 28.2598 24.9844 32.4945 24.9844C36.7291 24.9844 40.1719 28.4157 40.1719 32.6561Z"
-                className='stroke-gray-500 dark:stroke-gray-300 group-hover:stroke-blue-500'
-                fill='transparent'
-            ></path>
-        </svg>
-        {!zenMode && <p className="text-gray-500 dark:text-gray-300 group-hover:text-blue-500 -ml-3">
-             {difficulty.toFixed(3)} 
-        </p>}
-    </div>
+    <>
+      <div onClick={handleBoost} onMouseDown={handleOnMouseDown} onMouseUp={handleOnMouseUp} onTouchStart={handleOnTouchStart} onTouchEnd={handleOnTouchEnd} className={`${zenMode && "justify-center"} flex group items-center w-fit relative select-none`}>
+          <div className={superBoost && !boostPopupOpen ? `absolute ${zenMode ? "justify-center":"left-[14px]"} min-h-[42px] min-w-[42px] rounded-full border-t-4 border-green-500 animate-spin`: "hidden"}/>
+          <div className={`hidden group-hover:block animate-ping absolute ${zenMode ? "justify-center":"left-[18px]"} min-h-[33px] min-w-[33px] rounded-full bg-blue-200`}></div>
+          <div className={`hidden group-hover:block animate-ping  delay-75 absolute ${zenMode ? "justify-center":"left-[24px]"} min-h-[22px] min-w-[22px] rounded-full bg-blue-400`}></div>
+          <div className={`hidden group-hover:block animate-ping  delay-100 absolute ${zenMode ? "justify-center":"left-[29px]"} min-h-[11px] min-w-[11px] rounded-full bg-blue-600`}></div>
+          <svg viewBox='0 0 65 65' className='relative min-h-[69px] min-w-[69px] stroke-1 stroke-gray-500 dark:stroke-gray-300 rounded-full group-hover:stroke-blue-500'>
+              <path
+                  d="M40.1719 32.6561C40.1719 35.6054 38.5079 38.1645 36.0692 39.4499C35.002 40.0122 33.7855 36.2423 32.4945 36.2423C31.1288 36.2423 29.8492 40.0696 28.7418 39.4499C26.4007 38.1359 24.8228 35.5308 24.8228 32.6561C24.8228 28.4214 28.2598 24.9844 32.4945 24.9844C36.7291 24.9844 40.1719 28.4157 40.1719 32.6561Z"
+                  className='stroke-gray-500 dark:stroke-gray-300 group-hover:stroke-blue-500'
+                  fill='transparent'
+              ></path>
+          </svg>
+          {!zenMode && <p className="text-gray-500 dark:text-gray-300 group-hover:text-blue-500 -ml-3">
+              {difficulty.toFixed(3)} 
+          </p>}
+      </div>
+      <Drawer 
+      selector="#boostPopupControler"
+      isOpen={boostPopupOpen}
+      onClose={() => setBoostPopupOpen(false)}
+    >
+      <SuperBoostPopup contentTxId={tx_id} onClose={() => setBoostPopupOpen(false)}/>
+    </Drawer>
+  </>
    
   )
 }

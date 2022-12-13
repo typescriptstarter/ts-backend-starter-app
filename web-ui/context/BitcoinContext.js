@@ -18,6 +18,7 @@ const BitcoinProvider = (props) => {
   const [wallet, setWallet] = useLocalStorage(walletStorageKey);
   const [paymail, setPaymail] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [exchangeRate, setExchangeRate] = useState(100);
   const {
     twetchAuthenticate,
     tokenTwetchAuth,
@@ -28,6 +29,14 @@ const BitcoinProvider = (props) => {
   const { relayAuthenticate, relaySend, relayPaymail, relayLogout } =
     useRelay();
   const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get("https://api.whatsonchain.com/v1/bsv/main/exchangerate")
+      .then((resp) => {
+        setExchangeRate(resp.data.rate);
+      });
+  });
 
   useEffect(() => {
     switch (wallet) {
@@ -213,6 +222,7 @@ const BitcoinProvider = (props) => {
       send,
       boost,
       authenticated,
+      exchangeRate,
       paymail,
       avatar,
       logout,
@@ -224,6 +234,7 @@ const BitcoinProvider = (props) => {
       send,
       boost,
       authenticated,
+      exchangeRate,
       avatar,
       paymail,
       logout,
