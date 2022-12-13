@@ -3,6 +3,13 @@ import { publish } from 'rabbi'
 
 import * as models from '../models'
 
+
+export const exchange = 'powco.dev'
+
+export const routingkey = 'github.webhook.created'
+
+export const queue = 'powco_dev_mark_issues_closed'
+
 export default async function(channel, msg, json) {
 
     const { action, pull_request, issue, repository, organization } = json.payload
