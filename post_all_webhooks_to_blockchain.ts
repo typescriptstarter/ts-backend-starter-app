@@ -2,15 +2,11 @@ require('dotenv')
 
 import { channel, log } from 'rabbi'
 
-import { loadFromFiles } from './src/config'
-
 export const exchange = 'rabbi'
 
 export const queue = 'post_powco_dev_github_webhook_onchain'
 
 export const routingkey = 'dev.powco.github.webhook'
-
-import { fetch } from 'powco'
 
 import { onchain } from 'stag-wallet'
 
@@ -30,12 +26,11 @@ export default async function start() {
 
     where: {
 
-      /*tx_id: {
+      tx_id: {
 
         [Op.eq]: null
 
       }
-      */
 
     },
 
@@ -43,11 +38,7 @@ export default async function start() {
 
   })
 
-  console.log('webhooks result', webhooks)
-
   for (let webhook of webhooks) {
-
-    console.log(webhook.toJSON())
 
     if (!webhook.payload.issue) {
       continue;
