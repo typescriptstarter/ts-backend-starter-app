@@ -2,39 +2,20 @@
 
 require('dotenv').config();
 
-import { Actor, Joi, log } from 'rabbi';
+import { Actor, Joi, log } from 'rabbi';  
 
-export async function start() {
+export const exchange = 'powco.dev'
 
-  const actor = Actor.create({
+export const routingkey = 'github.webhook.created'
 
-    exchange: 'powco.dev',
+export const queue = 'powco.dev.github.webhook.created'
 
-    routingkey: 'github.webhook.created',
+export default async function start(channel, msg, json) {
 
-    queue: 'powco.dev.github.webhook.created'
+  log.info(msg.content.toString());
 
-  })
+  log.info(json);
 
-  console.log('actor.created', actor)
-
-  actor.start(async (channel, msg, json) => {
-
-    log.info(msg.content.toString());
-
-    log.info(json);
-
-    channel.ack(msg);
-
-  })
-
-  console.log('actor', actor)
+  channel.ack(msg);
 
 }
-
-if (require.main === module) {
-
-  start();
-
-}
-
