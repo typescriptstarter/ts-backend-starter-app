@@ -14,11 +14,7 @@ get402.json
 dist/
 .rabbi/config.json
 .runcache/
-<<<<<<< HEAD
 web-ui/.next/
-=======
-web-ui/.next
 web-ui/node_modules
->>>>>>> 6975d69534d03f4fc85cf488b1e089eb10b5a88c
 web-ui/out
 powco-dev.2022-10-21.private-key.pem
