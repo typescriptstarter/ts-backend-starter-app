@@ -3,48 +3,57 @@ import React from 'react'
 import Link from 'next/link'
 import { UserIcon } from '.'
 import BoostButton from './BoostButton'
+import { useEffect } from 'react'
 
 const GithubIssueCard = (props) => {
-    const { txid } = props
-    const {issue, organization, repository, sender} = props.content    
-    const handleComment = (e) => {
+  const { boostpow_proofs, difficulty, issue_id, org, repo, state, title, txid } = props
+  const { assignees, body, closed_at, comments, comments_url, created_at, html_url, labels, user } = props?.data
+  
+  
+  const handleComment = (e) => {
       e.preventDefault()
-      window.open(issue.html_url)
-    }
+      window.open(html_url)
+  }
+
+
 
   return (
     <div className='grid grid-cols-12 bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 hover:dark:bg-gray-500 mt-0.5 first:rounded-t-lg'>
-        <div className='col-span-12 flex items-center '>
-            {/* <p className='p-4 text-sm italic text-gray-500 hover:underline'><a target="_blank" rel="noreferrer" href={repository.html_url}>{organization.login} /{repository.name}</a></p> */}
+        <div className='col-span-12 flex items-center justify-between'>
+            {/* <p className='p-4 text-sm italic text-gray-500 hover:underline'><a target="_blank" rel="noreferrer" href={repository.html_url}>{org} /{repo}</a></p> */}
             <p className='p-4 text-sm italic text-gray-600 dark:text-gray-300'>
-              <Link href={`/org/${organization.login}`}>
-                <span className='hover:underline cursor-pointer'>{organization.login}</span>
+              <Link href={`/org/${org}`}>
+                <span className='hover:underline cursor-pointer'>{org}</span>
               </Link>
               <span className='mx-1'>/</span>
-              <Link href={`/org/${organization.login}/${repository.name}`}>
-                <span className='hover:underline cursor-pointer'>{repository.name}</span>
+              <Link href={`/org/${org}/${repo}`}>
+                <span className='hover:underline cursor-pointer'>{repo}</span>
               </Link>
             </p>
+            {labels.length > 0 && (<div className='flex pr-4'>
+              <div style={{backgroundColor: `#${labels[0].color}`}} className="rounded-full w-5 h-5 mr-2"/>
+              <p className='text-xs font-semibold'>{labels[0].name}</p>
+              </div>)}
         </div>
         <div className='col-span-12'>
             <div className='mb-0.5 px-4 pt-4 pb-1 grid items-start grid-cols-12 max-w-screen cursor-pointer'>
                 <div className='col-span-1'>
-                    <a target="_blank" rel='noreferrer' href={sender.html_url}>
-                        <UserIcon src={sender.avatar_url} size={46}/>
+                    <a target="_blank" rel='noreferrer' href={user.html_url}>
+                        <UserIcon src={user.avatar_url} size={46}/>
                     </a>
                 </div>
                 <div className='col-span-11 ml-6'>
                     <div className='flex'>
-                        <a target="_blank" rel='noreferrer' href={issue?.html_url} className='text-base leading-4 font-bold text-gray-900 dark:text-white cursor-pointer overflow-hidden text-ellipsis	hover:underline'>
-                            {issue.title}
+                        <a target="_blank" rel='noreferrer' href={html_url} className='text-base leading-4 font-bold text-gray-900 dark:text-white cursor-pointer overflow-hidden text-ellipsis	hover:underline'>
+                            {title}
                         </a>
                         <div className='grow'/>
                         <a target="_blank" rel="noreferrer" href={`https://whatsonchain.com/tx/${txid}`} className='ml-2 text-xs leading-5 whitespace-nowrap text-gray-500 dark:text-gray-300 hover:text-gray-700 hover:dark:text-gray-500'>
-                            {moment(issue?.created_at).fromNow()}
+                            {moment(created_at).fromNow()}
                         </a>
                     </div>
                     <div className='mt-1 text-gray-900 dark:text-white text-base leading-6 whitespace-pre-line break-words'>
-                        {issue?.body}
+                        {body}
                     </div>
                     <div className='ml-1'>
                 <div className='flex w-full'>
@@ -62,10 +71,10 @@ const GithubIssueCard = (props) => {
                       ></path>
                     </svg>
                     <p className="text-gray-500 dark:text-gray-300 group-hover:text-green-500">
-                        {issue?.comments}
+                        {comments}
                       </p>
                   </div>
-                  <BoostButton tx_id={txid} difficulty={props.difficulty || 0}/>
+                  <BoostButton tx_id={txid} difficulty={difficulty || 0}/>
                 </div>
               </div>
                 </div>
