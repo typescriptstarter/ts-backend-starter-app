@@ -1,20 +1,68 @@
 import React, { useEffect, useState } from "react";
-import Dashboard from "../components/Dashboard";
+import ThreeColumnLayout from "../components/ThreeColumnLayout";
+import GithubIssueCard from "../components/GithubIssueCard";
 import { useAPI } from "../hooks/useAPI";
 import { useTuning } from "../context/TuningContext";
 import { useOnchain } from "../hooks/useOnchain";
+import { Loader } from "../components";
 
 const Index = () => {
+  const [tab, setTab] = useState("open")
   const { startTimestamp } = useTuning();
   const org = "pow-co";
   let { data, error, loading } = useAPI(
     `/boostpow/rankings/github/issues/${org}`,
-    `?start_date=${startTimestamp}`
+    `?state=${tab}&start_date=${startTimestamp}`
   );
 
   let { issues } = data || [];
 
-  return <Dashboard data={issues} error={error} loading={loading} />;
+  return (
+    <ThreeColumnLayout>
+      <div className="col-span-12 lg:col-span-6 min-h-screen">
+      <div className="px-4 mt-2">
+          <div className="flex my-6">
+            <div className="flex">
+              <div
+                //onClick={() => handleChangeTab("1F9E9")}
+                onClick={() => setTab("open")}
+                className={
+                  //tag === "1F9E9"
+                  tab === "open"
+                    ? "text-sm leading-4 py-2 px-2 sm:px-3 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 font-medium mr-2 cursor-pointer rounded-md whitespace-nowrap"
+                    : "text-sm leading-4 py-2 px-2 sm:px-3 text-gray-700 dark:text-gray-300 font-normal mr-2 cursor-pointer rounded-md whitespace-nowrap"
+                }
+              >
+                Open
+              </div>
+              <div
+                //onClick={() => handleChangeTab("1F4A1")}
+                onClick={() => setTab("closed")}
+                className={
+                  //tag === "1F4A1"
+                  tab === "closed"
+                    ? "text-sm leading-4 py-2 px-2 sm:px-3 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 font-medium mr-2 cursor-pointer rounded-md whitespace-nowrap"
+                    : "text-sm leading-4 py-2 px-2 sm:px-3 text-gray-700 dark:text-gray-300 font-normal mr-2 cursor-pointer rounded-md whitespace-nowrap"
+                }
+              >
+                Closed
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="w-full py-5">
+          <div className="relative">
+            {loading && <Loader/>}
+            {!error && issues?.map((entry) => {
+              if (entry) {
+                return <GithubIssueCard key={entry.txid} {...entry} />;
+              }
+            })}
+          </div>
+        </div>
+      </div>
+    </ThreeColumnLayout>
+  );
 };
 
 export default Index;
