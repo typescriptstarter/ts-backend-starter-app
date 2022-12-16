@@ -13,8 +13,5 @@ RUN npm install
 # Bundle app source
 COPY . /usr/src/app
 
-RUN npm run build
+CMD npm start
 
-RUN npm link
-
-CMD rabbi start

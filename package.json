@@ -1,6 +1,6 @@
 {
    "name": "rabbi_cli_app",
-   "version": "0.2.0",
+   "version": "0.3.0",
    "private": true,
    "description": "",
    "scripts": {
@@ -34,6 +34,8 @@
       "prom-client": "^14.0.1",
       "prompt-async": "^0.9.9",
       "rabbi": "^1.19.4",
+      "socket.io": "^4.5.4",
+      "socket.io-client": "^4.5.4",
       "winston": "^3.3.3",
       "ws": "^8.2.0"
    },
