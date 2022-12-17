@@ -11,19 +11,22 @@ const SuperBoostPopup = ({ contentTxId, onClose }) => {
     const { relayOne } = useRelay()
     const { authenticated, exchangeRate } = useBitcoin()
     const [difficulty, setDifficulty] = useState(0.025)
+    const [value, setValue] = useState(124000)
     const [price,setPrice] = useState(0.05)
 
     useEffect(()=>{
-        getPriceForDifficulty(difficulty).then((res)=>setPrice(res.toFixed(2)))
+        getPriceForDifficulty(difficulty).then((res)=>{
+          setValue(res.satoshis)
+          setPrice(res.price.toFixed(2))
+        })
     },[difficulty])
 
     const getPriceForDifficulty = async (difficulty) => {
 
         const resp = await axios.get(`https://pow.co/api/v1/boostpow/${contentTxId}/new?difficulty=${difficulty}`)
         const satoshis = resp?.data?.outputs[0]?.amount
-        console.log(satoshis, exchangeRate)
         let price = (satoshis/1e8) * exchangeRate / 2
-        return price
+        return {satoshis, price}
     }
 
     const boost = async () => {
@@ -33,7 +36,7 @@ const SuperBoostPopup = ({ contentTxId, onClose }) => {
         const stag = wrapRelayx(relayOne)
         const {txid, txhex, job} = await stag.boost.buy({
           content: contentTxId,
-          value: 124_000,
+          value: value,
           difficulty: difficulty
         })
         relayOne.send({
