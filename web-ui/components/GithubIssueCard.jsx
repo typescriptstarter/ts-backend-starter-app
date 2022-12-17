@@ -15,6 +15,10 @@ const GithubIssueCard = (props) => {
       window.open(html_url)
   }
 
+  if(labels[0]?.name === "dependencies"){
+    return <></>
+  }
+
 
 
   return (
