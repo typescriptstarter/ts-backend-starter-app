@@ -40,6 +40,7 @@
       "prom-client": "^14.0.1",
       "prompt-async": "^0.9.9",
       "rabbi": "^1.20.3",
+      "run-sdk": "^0.6.41",
       "sequelize": "^6.25.3",
       "stag-wallet": "^0.2.0",
       "superagent": "^8.0.2",
