@@ -112,7 +112,18 @@ server.route({
   handler: handlers.GithubIssues.repo,
   options: {
     description: 'List all issues for github repo',
-    tags: ['api', 'github', 'issues']
+    tags: ['api', 'github', 'issues'],
+    validate: {
+      query: Joi.object({
+        state: Joi.string().valid('open', 'closed', 'all').optional(),
+        start_date: Joi.date().optional(),
+        end_date: Joi.date().optional()
+      }).optional(),
+      params: Joi.object({
+        org: Joi.string().optional(),
+        repo: Joi.string().optional()
+      }).optional()
+    }
   }
 })
 

@@ -35,25 +35,23 @@ export async function show(req, h) {
 
     }
 
-    if (req.query.start_timestamp) {
-
-        console.log('START TIMESTAMP', req.query.start_timestamp)
+    if (req.query.start_date) {
   
       where['timestamp'] = {
-        [Op.gte]: new Date(parseInt(req.query.start_timestamp))
+        [Op.gte]: new Date(parseInt(req.query.start_date))
       }
   
-      query['timestamp']['>='] = new Date(parseInt(req.query.start_timestamp))
+      query['timestamp']['>='] = new Date(parseInt(req.query.start_date))
   
     }
   
-    if (req.query.end_timestamp) {
+    if (req.query.end_date) {
   
       where['timestamp'] = {
-        [Op.lte]: new Date(parseInt(req.query.end_timestamp))
+        [Op.lte]: new Date(parseInt(req.query.end_date))
       }
   
-      query['timestamp']['<='] = new Date(parseInt(req.query.end_timestamp))
+      query['timestamp']['<='] = new Date(parseInt(req.query.end_date))
   
     }
 
@@ -73,8 +71,6 @@ export async function show(req, h) {
         })
 
         issues = issues.map(record => {
-
-            console.log(record)
 
             const difficulty = record.boostpow_proofs.reduce((sum, proof) => sum + proof.difficulty, 0)
 
