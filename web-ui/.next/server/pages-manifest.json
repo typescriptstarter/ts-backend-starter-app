@@ -1,12 +1,6 @@
 {
   "/_app": "pages/_app.js",
-  "/_document": "pages/_document.js",
-  "/api/hello": "pages/api/hello.js",
   "/_error": "pages/_error.js",
-  "/": "pages/index.html",
-  "/org/[organization_id]/[repository_id]": "pages/org/[organization_id]/[repository_id].html",
-  "/org": "pages/org.html",
-  "/org/[organization_id]": "pages/org/[organization_id].html",
-  "/settings": "pages/settings.html",
-  "/404": "pages/404.html"
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js"
 }
