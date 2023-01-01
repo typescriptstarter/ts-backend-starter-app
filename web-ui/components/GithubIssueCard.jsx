@@ -3,12 +3,20 @@ import React from 'react'
 import Link from 'next/link'
 import { UserIcon } from '.'
 import BoostButton from './BoostButton'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
+import axios from 'axios'
+
+async function getBalance(address) {
+  const { data } = await axios.get(`https://api.whatsonchain.com/v1/bsv/main/address/${address}/balance`)
+
+  return data.confirmed + data.unconfirmed
+}
 
 const GithubIssueCard = (props) => {
-  const { boostpow_proofs, difficulty, issue_id, org, repo, state, title, txid } = props
+  const { boostpow_proofs, difficulty, issue_id, org, repo, state, title, txid, run_owner } = props
   const { assignees, body, closed_at, comments, comments_url, created_at, html_url, labels, user } = props?.data
-  
+  const [satoshis, setSatoshis] = useState()
   
   const handleComment = (e) => {
       e.preventDefault()
@@ -19,9 +27,20 @@ const GithubIssueCard = (props) => {
     return <></>
   }
 
+  useEffect(() => {
 
+    getBalance(run_owner).then((balance) => {
+      setSatoshis(balance)
+    })
+
+  }, [])
+
+  function handleClickRewards() {
+    window.open(`https://whatsonchain.com/address/${run_owner}`, '_blank')
+  }
 
   return (
+
     <div className='grid grid-cols-12 bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 hover:dark:bg-gray-500 mt-0.5 first:rounded-t-lg'>
         <div className='col-span-12 flex items-center justify-between'>
             {/* <p className='p-4 text-sm italic text-gray-500 hover:underline'><a target="_blank" rel="noreferrer" href={repository.html_url}>{org} /{repo}</a></p> */}
@@ -62,6 +81,14 @@ const GithubIssueCard = (props) => {
                     <div className='ml-1'>
                 <div className='flex w-full'>
                   <div className='grow'/>
+
+                  <div onClick={handleClickRewards} className='min-w-[111px] justify-center flex group items-center w-fit relative'>
+                  
+                  <i class="fak fa-thin"></i>
+                    <p className="text-gray-500 dark:text-gray-300 group-hover:text-green-500">
+                        ₿ {satoshis}
+                      </p>
+                  </div>
                   <div onClick={handleComment} className='min-w-[111px] justify-center flex group items-center w-fit relative'>
                     <svg
                       viewBox="0 0 40 40"

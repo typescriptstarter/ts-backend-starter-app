@@ -2,67 +2,30 @@
 
 require('dotenv').config()
 
-import { listTokenBalances } from './src/relayx'
 
-import { Script } from 'bsv'
-
-import * as models from './src/models'
-
-import { run } from './src/run'
+import { claimBounty } from './src/bounty'
 
 export async function main() {
 
-  const issue_id = parseInt(process.argv[2])
+    const txid = await claimBounty({
+        org: 'pow-co',
+        repo: 'askbitcoin',
+        number: 5,
+        destination: '12syqu1XwFzGVqTTK5U6EkJaqq2FPeLmRH' // owenkellogg@relayx.io
+    })
 
-  const record = await models.GithubIssue.findOne({ where: {id: issue_id } })
+    if (txid) {
 
-  const address = record.run_owner
+        console.log('bounty claimed!', {txid})
 
-  const tokens = await listTokenBalances(record.run_owner)
+    } else {
 
-  console.log({tokens})
-
-  const script = Script.fromAddress(address).toHex()
-  const utxos = await run.blockchain.utxos(script)
-
-  console.log({ utxos })
-
-  run.trust('*')
-
-  const unspent = await Promise.all(utxos.map(async (utxo) => {
-
-    const location = `${utxo.txid}_o${utxo.vout}`
-    
-    try {
-
-        const jig = await run.load(location)
-
-        console.log({jig})
-
-        if (jig) {
-
-            return { utxo, jig, type: 'jig' }
-        }
-         
-    } catch(error) {    
-
-        return { utxo, type: 'satoshis' }
-
+        console.log('no bounty to claim')
     }
-    
-  }))
 
-  for (let output of unspent) {
-
-    console.log(output)
-    
-  }
-
-  // list unspent outputs
-
-  // determine which are satoshis and which are run tokens
+    process.exit(0)
 
 }
 
-main()
 
+main()

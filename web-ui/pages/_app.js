@@ -31,6 +31,7 @@ function MyApp({ Component, pageProps }) {
         <title>PowCo Dev | Top Github issues Ranked by Proof of Work</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
       </Head>
       <Script
         src="https://one.relayx.io/relayone.js"
