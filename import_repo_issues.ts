@@ -6,7 +6,7 @@ async function main() {
 
   try {
 
-    const result = await importRepoIssues({ org: 'pow-co', repo: 'powco.dev' })
+    const result = await importRepoIssues({ org: 'pow-co', repo: process.argv[2] })
 
     console.log(result)
 

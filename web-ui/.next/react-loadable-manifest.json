@@ -1,54 +1,54 @@
 {
   "../components/ChatLayout.jsx -> ./Header": {
-    "id": 8568,
+    "id": "../components/ChatLayout.jsx -> ./Header",
     "files": []
   },
   "../components/ChatLayout.jsx -> ./SideBar": {
-    "id": 5359,
+    "id": "../components/ChatLayout.jsx -> ./SideBar",
     "files": [
-      "static/chunks/359.4e124be1884e56b2.js"
+      "static/chunks/components_SideBar_jsx.js"
     ]
   },
   "../components/ChatLayout.jsx -> ./SidebarTuning": {
-    "id": 5511,
+    "id": "../components/ChatLayout.jsx -> ./SidebarTuning",
     "files": [
-      "static/chunks/511.517a8f1ae60f8078.js"
+      "static/chunks/components_SidebarTuning_jsx.js"
     ]
   },
   "../components/NotificationsLayout.jsx -> ./Header": {
-    "id": 8568,
+    "id": "../components/NotificationsLayout.jsx -> ./Header",
     "files": []
   },
   "../components/NotificationsLayout.jsx -> ./SideBar": {
-    "id": 5359,
+    "id": "../components/NotificationsLayout.jsx -> ./SideBar",
     "files": [
-      "static/chunks/359.4e124be1884e56b2.js"
+      "static/chunks/components_SideBar_jsx.js"
     ]
   },
   "../components/PanelLayout.jsx -> ./Header": {
-    "id": 8568,
+    "id": "../components/PanelLayout.jsx -> ./Header",
     "files": []
   },
   "../components/PanelLayout.jsx -> ./SideBar": {
-    "id": 5359,
+    "id": "../components/PanelLayout.jsx -> ./SideBar",
     "files": [
-      "static/chunks/359.4e124be1884e56b2.js"
+      "static/chunks/components_SideBar_jsx.js"
     ]
   },
   "../components/ThreeColumnLayout.jsx -> ./Header": {
-    "id": 8568,
+    "id": "../components/ThreeColumnLayout.jsx -> ./Header",
     "files": []
   },
   "../components/ThreeColumnLayout.jsx -> ./SideBar": {
-    "id": 5359,
+    "id": "../components/ThreeColumnLayout.jsx -> ./SideBar",
     "files": [
-      "static/chunks/359.4e124be1884e56b2.js"
+      "static/chunks/components_SideBar_jsx.js"
     ]
   },
   "../components/ThreeColumnLayout.jsx -> ./SidebarTuning": {
-    "id": 5511,
+    "id": "../components/ThreeColumnLayout.jsx -> ./SidebarTuning",
     "files": [
-      "static/chunks/511.517a8f1ae60f8078.js"
+      "static/chunks/components_SidebarTuning_jsx.js"
     ]
   }
 }

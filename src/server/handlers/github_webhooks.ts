@@ -8,6 +8,7 @@ import * as Boom from 'boom'
 import { notifyIssueOpened } from '../../rocketchat'
 
 import { onchain } from 'stag-wallet'
+
 import { handleWebhook } from '../../webhooks'
 
 import { publish } from 'rabbi'
@@ -30,15 +31,15 @@ export async function create(req, h) {
 
   log.info('api.github.webhook.create', { payload })
 
-  handleWebhook(payload)
-
   try {
 
     const webhook = await models.GithubWebhook.create({ payload });
 
     publish('powco.dev', 'github.webhook.created', webhook.toJSON())
 
-    (async () => {
+    handleWebhook(payload)
+
+    /*(async () => {
 
       if (!webhook.payload.issue) {
         return
@@ -61,9 +62,8 @@ export async function create(req, h) {
       }
   
       await axios.get(`https://onchain.sv/api/v1/events/${webhook.tx_id}`)
-  
 
-    })()
+    })()*/
 
     log.info('github.webhook.created', { payload })
 

@@ -77,6 +77,16 @@ server.route({
 })
 
 server.route({
+  method: 'POST',
+  path: '/api/v1/webhooks/github',
+  handler: handlers.GithubWebhooks.create,
+  options: {
+    description: 'Receive and log all webhooks for pow-co organization on Github',
+    tags: ['api', 'webhooks', 'github']
+  }
+})
+
+server.route({
   method: 'GET',
   path: '/api/v1/webhooks/github/pow-co',
   handler: handlers.GithubWebhooks.index,
