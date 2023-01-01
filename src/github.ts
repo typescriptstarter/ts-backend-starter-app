@@ -198,8 +198,6 @@ export async function syncIssueToBlockchain(issue): Promise<[any, boolean]> {
 
   }
 
-  console.log('__RESULT__', { result, isNew })
-
   if (isNew) {
 
     console.log('posted to blockchain', result)
@@ -311,17 +309,33 @@ import { readFileSync } from 'fs';
 import { createAppAuth } from "@octokit/auth-app";
 import { notify } from './rocketchat';
 
+export function getAppPrivateKey() {
+
+  var filepath = join(__dirname, '..', 'powco-dev.2022-10-21.private-key.pem')
+
+  if (process.env.github_private_key_path) {
+      
+      filepath = process.env.github_private_key_path
+  }
+
+  const privateKey = readFileSync(filepath);
+
+  return privateKey.toString()
+}
+
+export const appId = 251846
+
 export async function syncAllReposToBlockchainForever({ org }: { org: string }) {
 
   while (true) {
 
     try { 
 
-      const privateKey = readFileSync(join(__dirname, '..', 'powco-dev.2022-10-21.private-key.pem'));
+      const privateKey = getAppPrivateKey()
 
       const auth = createAppAuth({
         appId: 251846,
-        privateKey: privateKey.toString(),
+        privateKey,
         installationId: 31749918
       });
         

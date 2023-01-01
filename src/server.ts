@@ -87,6 +87,12 @@ server.route({
 })
 
 server.route({
+  method: 'POST',
+  path: '/api/v1/github/tokens',
+  handler: handlers.GithubTokens.create
+})
+
+server.route({
   method: 'GET',
   path: '/api/v1/webhooks/github/pow-co',
   handler: handlers.GithubWebhooks.index,
