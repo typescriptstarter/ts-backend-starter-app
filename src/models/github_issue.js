@@ -2,6 +2,9 @@
 const {
   Model
 } = require('sequelize');
+
+const { publish } = require('rabbi')
+
 module.exports = (sequelize, DataTypes) => {
   class GithubIssue extends Model {
     /**
@@ -31,10 +34,20 @@ module.exports = (sequelize, DataTypes) => {
     repo: DataTypes.STRING,
     org: DataTypes.STRING,
     txid: DataTypes.STRING,
-    state: DataTypes.STRING
+    state: DataTypes.STRING,
+    run_origin: DataTypes.STRING,
+    run_location: DataTypes.STRING,
+    run_owner: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'GithubIssue',
+    hooks: {
+      afterCreate: async (record, options) => {
+
+        publish('powco.dev', 'github.issue.created', record.toJSON())
+
+      }
+    }
   });
   return GithubIssue;
 };

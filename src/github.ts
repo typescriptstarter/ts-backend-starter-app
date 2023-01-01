@@ -13,6 +13,8 @@ import { onchain } from 'stag-wallet'
 
 import delay from 'delay'
 
+import { publish } from 'rabbi'
+
 const octokit = new Octokit({
   auth: config.get('github_token')
 })
@@ -32,6 +34,30 @@ export async function listRepos({org}: {org: string }): Promise<any> {
   const { data } = await axios.get(`https://api.github.com/orgs/${org}/repos`)
 
   return data
+
+}
+
+export async function importIssue({ org, repo, issue_id }: {repo: string, org: string, issue_id: any}): Promise<any> {
+
+  const { data } = await axios.get(`https://api.github.com/repos/${org}/${repo}/issues/${issue_id}`)
+
+  const issue = await models.GithubIssue.findOne({
+    where: {
+      org,
+      repo,
+      issue_id
+    }
+  })
+
+  if (issue) return issue
+
+  const newIssue = await models.GithubIssue.create({
+    org,
+    repo,
+    issue_id
+  })
+
+  return newIssue
 
 }
 
@@ -111,6 +137,8 @@ export async function importRepoIssues({ org, repo }: any): Promise<any> {
     })
 
     if (isNew) {
+
+      publish('powco.dev', 'github.issue.created', record.toJSON())
 
       result.push(issue)
 
