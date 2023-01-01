@@ -8,7 +8,8 @@ import axios from "axios"
 export default function AuthGithubCallback() {
 
     const { relayPaymail, runOwner } = useRelay()
-    const { githubToken, setGithubToken } = useState()
+    const { githubUsername, setGithubUsername } = useState()
+    const { githubAuthResult, setGithubAuthResult } = useState()
 
     const router = useRouter()
 
@@ -22,18 +23,18 @@ export default function AuthGithubCallback() {
     
         if (code) {
 
-            console.log('GITHUB CODE: ', code)
-
             ;(async () => {
 
-                const { data: { token } } = await axios.post(`http://localhost:5200/api/v1/github/tokens`, {
+                const { data: response } = await axios.post(`https://powco.dev/api/v1/github/tokens`, {
                     code,
                     paymail: relayPaymail
                 })
 
-                  console.log('GITHUB TOKEN', token)
+                console.log('github.tokens.post.response', response)
 
-                setGithubToken(token)
+                setGithubAuthResult(response)
+
+                setGithubUsername(response.github_user.login)
             })()
 
 
@@ -80,9 +81,7 @@ export default function AuthGithubCallback() {
           <div className="w-full py-5">
             <div className="relative">
                 <h1>AuthGithubCallback</h1>
-                {githubToken && <p>github token: {githubToken}</p>}
-                <p>github code: {query.code}</p>
-                <p>github installation id: {query.installation_id}</p>
+                {githubUsername && <p>github user: {githubUsername}</p>}
                 <p>run paymail: {relayPaymail}</p>
                 <p>run owner: {runOwner}</p>
         

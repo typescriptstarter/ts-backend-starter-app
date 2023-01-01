@@ -750,7 +750,7 @@
     "@octokit/types" "^8.0.0"
     "@octokit/webhooks" "^10.0.0"
 
-"@octokit/auth-app@^4.0.0":
+"@octokit/auth-app@^4.0.0", "@octokit/auth-app@^4.0.7":
   "integrity" "sha512-hjjVCoI/+1oLminVHJPPexguYb9FP4Q60hEHExgy1uAKMMJ5Zf8iJIeRJlIIqneTb4vt7NvUTEj4YDxBLZ1FLg=="
   "resolved" "https://registry.npmjs.org/@octokit/auth-app/-/auth-app-4.0.7.tgz"
   "version" "4.0.7"
@@ -801,7 +801,7 @@
     "btoa-lite" "^1.0.0"
     "universal-user-agent" "^6.0.0"
 
-"@octokit/auth-token@^3.0.0":
+"@octokit/auth-token@^3.0.0", "@octokit/auth-token@^3.0.2":
   "integrity" "sha512-pq7CwIMV1kmzkFTimdwjAINCXKTajZErLB4wMLYapR2nuB/Jpr66+05wOTZMSCBXP6n4DdDWT2W19Bm17vU69Q=="
   "resolved" "https://registry.npmjs.org/@octokit/auth-token/-/auth-token-3.0.2.tgz"
   "version" "3.0.2"
