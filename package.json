@@ -39,14 +39,15 @@
       "powco": "^1.2.0",
       "prom-client": "^14.0.1",
       "prompt-async": "^0.9.9",
-      "rabbi": "^1.20.3",
+      "rabbi": "^1.21.0",
       "run-sdk": "^0.6.41",
       "sequelize": "^6.25.3",
-      "stag-wallet": "^0.2.0",
+      "stag-wallet": "^0.3.0",
       "superagent": "^8.0.2",
       "txo": "^0.0.21",
       "winston": "^3.3.3",
-      "ws": "^8.2.0"
+      "ws": "^8.2.0",
+      "yargs": "^17.6.2"
    },
    "devDependencies": {
       "@hapi/code": "^8.0.7",

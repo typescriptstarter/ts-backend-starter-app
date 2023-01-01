@@ -11,7 +11,7 @@ export async function handleWebhook(webhook: any) {
 
             await importRepoIssues({ org, repo })
 
-            await syncRepoIssuesToBlockchain({ org, repo })
+            //await syncRepoIssuesToBlockchain({ org, repo })
 
         }
 
