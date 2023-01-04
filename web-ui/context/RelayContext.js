@@ -87,9 +87,6 @@ const RelayProvider = (props) => {
   const [relayOne, setRelayOne] = useState();
   const [relayOtc, setRelayOtc] = useState();
   const [runOwner, setRunOwner] = useLocalStorage(runOwnerStorageKey);
-  const run = new Run({
-    owner: runOwner,
-  });
 
   const [ready, setReady] = useState(false);
 

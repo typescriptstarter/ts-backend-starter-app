@@ -63,9 +63,9 @@ const BugBountyPopup = ({ address, onClose }) => {
     const [bAmount, setBAmount] = useState(0.1)
     const [tAmount, setTAmount] = useState(1)
     const [price, setPrice]=useState(0)
-    const run = new Run({ owner:runOwner })
+/*     const run = new Run({ owner:runOwner })
     const powco_contract = "93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2"
-
+ */
     
     
     useEffect(() => {
@@ -138,7 +138,7 @@ const BugBountyPopup = ({ address, onClose }) => {
                             }
                         >Bitcoin</div>
                         <div
-                            onClick={() => setTab("token")} 
+                            //onClick={() => setTab("token")} 
                             className={
                             tab === "token"
                                 ? "text-sm leading-4 py-2 px-2 sm:px-3 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 font-medium mr-2 cursor-pointer rounded-md whitespace-nowrap"

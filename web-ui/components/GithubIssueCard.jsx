@@ -1,5 +1,6 @@
 import moment from "moment";
 import React from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { Drawer, UserIcon } from ".";
 import { useEffect, useState } from "react";
@@ -40,6 +41,7 @@ const GithubIssueCard = (props) => {
     labels,
     user,
   } = props?.data;
+  const router = useRouter()
   const [satoshis, setSatoshis] = useState(0);
   const [bugBountyPopupOpen, setBugBountyPopupOpen] = useState(false)
 
@@ -87,6 +89,7 @@ const GithubIssueCard = (props) => {
       isLoading: false,
     });
   };
+
 
   return (
     <>
