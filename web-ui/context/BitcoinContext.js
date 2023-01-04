@@ -56,7 +56,7 @@ const BitcoinProvider = (props) => {
       case "relayx":
         if (relayPaymail) {
           setPaymail(relayPaymail);
-          setAvatar(`https://bitpic.network/u/${relayPaymail}`);
+          setAvatar(`https://a.relayx.com/u/${relayPaymail}`);
           setAuthenticated(true);
         }
         break;
