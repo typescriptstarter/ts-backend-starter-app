@@ -17,6 +17,7 @@ export default class MyDocument extends Document {
           <div id="walletProviderPopupControler" />
           <div id="tuningProviderPopupControler" />
           <div id="boostPopupControler" />
+          <div id="bugBountyPopupControler" />
           <NextScript />
         </body>
       </Html>

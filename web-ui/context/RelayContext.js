@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import { lsTest, useLocalStorage } from "../utils/storage";
+const Run = require("run-sdk");
 
 // export interface RelaySignResult {
 //   algorithm: 'bitcoin-signed-message';
@@ -86,6 +87,9 @@ const RelayProvider = (props) => {
   const [relayOne, setRelayOne] = useState();
   const [relayOtc, setRelayOtc] = useState();
   const [runOwner, setRunOwner] = useLocalStorage(runOwnerStorageKey);
+  const run = new Run({
+    owner: runOwner,
+  });
 
   const [ready, setReady] = useState(false);
 
@@ -96,6 +100,12 @@ const RelayProvider = (props) => {
       setReady(true);
     }
   }, []);
+
+  /* useEffect(() => {
+    run.inventory.sync().then((res) => {
+      console.log(res);
+    });
+  }, [runOwner]); */
 
   const isApp = useMemo(
     () => (relayOne && relayOne.isApp()) || false,

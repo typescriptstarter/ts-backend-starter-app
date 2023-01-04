@@ -29,7 +29,7 @@ const WalletProviderPopUp = ({ onClose }) => {
             </p>
             <button
               onClick={() => handleTwetchAuth("twetch")}
-              className="cursor-pointer bg-gray-200 dark:bg-gray-700 flex w-full mt-8 h-[52px] rounded-full py-2.5 px-5 border-none items-center text-center justify-center font-semibold cursor-pointer"
+              className="bg-gray-200 dark:bg-gray-700 flex w-full mt-8 h-[52px] rounded-full py-2.5 px-5 border-none items-center text-center justify-center font-semibold cursor-pointer"
             >
               <svg
                 viewBox="0 0 102 110"

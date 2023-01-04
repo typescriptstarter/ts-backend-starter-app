@@ -1,95 +1,163 @@
-import moment from 'moment'
-import React from 'react'
-import Link from 'next/link'
-import { UserIcon } from '.'
-import BoostButton from './BoostButton'
-import { useEffect, useState } from 'react'
+import moment from "moment";
+import React from "react";
+import Link from "next/link";
+import { Drawer, UserIcon } from ".";
+import { useEffect, useState } from "react";
+import { BoostButton } from "myboostpow-lib";
 
-import axios from 'axios'
+import axios from "axios";
+import { toast } from "react-toastify";
+import BugBountyPopup from "./BugBountyPopup";
 
 async function getBalance(address) {
-  const { data } = await axios.get(`https://api.whatsonchain.com/v1/bsv/main/address/${address}/balance`)
+  const { data } = await axios.get(
+    `https://api.whatsonchain.com/v1/bsv/main/address/${address}/balance`
+  );
 
-  return data.confirmed + data.unconfirmed
+  return data.confirmed + data.unconfirmed;
 }
 
 const GithubIssueCard = (props) => {
-  const { boostpow_proofs, difficulty, issue_id, org, repo, state, title, txid, run_owner } = props
-  const { assignees, body, closed_at, comments, comments_url, created_at, html_url, labels, user } = props?.data
-  const [satoshis, setSatoshis] = useState()
-  
-  const handleComment = (e) => {
-      e.preventDefault()
-      window.open(html_url)
-  }
+  const {
+    boostpow_proofs,
+    difficulty,
+    issue_id,
+    org,
+    repo,
+    state,
+    title,
+    txid,
+    run_owner,
+  } = props;
+  const {
+    assignees,
+    body,
+    closed_at,
+    comments,
+    comments_url,
+    created_at,
+    html_url,
+    labels,
+    user,
+  } = props?.data;
+  const [satoshis, setSatoshis] = useState(0);
+  const [bugBountyPopupOpen, setBugBountyPopupOpen] = useState(false)
 
-  if(labels[0]?.name === "dependencies"){
-    return <></>
+  let toastId;
+
+  const handleComment = (e) => {
+    e.preventDefault();
+    window.open(html_url);
+  };
+
+  if (labels[0]?.name === "dependencies") {
+    return <></>;
   }
 
   useEffect(() => {
-
     getBalance(run_owner).then((balance) => {
-      setSatoshis(balance)
-    })
-
-  }, [])
+      setSatoshis(balance);
+    });
+  }, []);
 
   function handleClickRewards() {
-    window.open(`https://whatsonchain.com/address/${run_owner}`, '_blank')
+    //window.open(`https://whatsonchain.com/address/${run_owner}`, "_blank");
+
+    setBugBountyPopupOpen(true)
   }
 
+  const handleBoostLoading = () => {
+    toastId = toast.loading("Transaction pending...", {
+      autoClose: 5000,
+    });
+  };
+
+  const handleBoostSuccess = () => {
+    toast.update(toastId, {
+      render: "Transaction Successful",
+      type: "success",
+      isLoading: false,
+    });
+  };
+
+  const handleBoostError = () => {
+    toast.update(toastId, {
+      render: "Transaction Failed",
+      type: "error",
+      isLoading: false,
+    });
+  };
+
   return (
-
-    <div className='grid grid-cols-12 bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 hover:dark:bg-gray-500 mt-0.5 first:rounded-t-lg'>
-        <div className='col-span-12 flex items-center justify-between'>
-            {/* <p className='p-4 text-sm italic text-gray-500 hover:underline'><a target="_blank" rel="noreferrer" href={repository.html_url}>{org} /{repo}</a></p> */}
-            <p className='p-4 text-sm italic text-gray-600 dark:text-gray-300'>
-              <Link href={`/org/${org}`}>
-                <span className='hover:underline cursor-pointer'>{org}</span>
-              </Link>
-              <span className='mx-1'>/</span>
-              <Link href={`/org/${org}/${repo}`}>
-                <span className='hover:underline cursor-pointer'>{repo}</span>
-              </Link>
-            </p>
-            {labels.length > 0 && (<div className='flex pr-4'>
-              <div style={{backgroundColor: `#${labels[0].color}`}} className="rounded-full w-5 h-5 mr-2"/>
-              <p className='text-xs font-semibold'>{labels[0].name}</p>
-              </div>)}
+    <>
+      <div className="grid grid-cols-12 bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 hover:dark:bg-gray-500 mt-0.5 first:rounded-t-lg">
+        <div className="col-span-12 flex items-center justify-between">
+          {/* <p className='p-4 text-sm italic text-gray-500 hover:underline'><a target="_blank" rel="noreferrer" href={repository.html_url}>{org} /{repo}</a></p> */}
+          <p className="p-4 text-sm italic text-gray-600 dark:text-gray-300">
+            <Link href={`/org/${org}`}>
+              <span className="hover:underline cursor-pointer">{org}</span>
+            </Link>
+            <span className="mx-1">/</span>
+            <Link href={`/org/${org}/${repo}`}>
+              <span className="hover:underline cursor-pointer">{repo}</span>
+            </Link>
+          </p>
+          {labels.length > 0 && (
+            <div className="flex pr-4">
+              <div
+                style={{ backgroundColor: `#${labels[0].color}` }}
+                className="rounded-full w-5 h-5 mr-2"
+              />
+              <p className="text-xs font-semibold">{labels[0].name}</p>
+            </div>
+          )}
         </div>
-        <div className='col-span-12'>
-            <div className='mb-0.5 px-4 pt-4 pb-1 grid items-start grid-cols-12 max-w-screen cursor-pointer'>
-                <div className='col-span-1'>
-                    <a target="_blank" rel='noreferrer' href={user.html_url}>
-                        <UserIcon src={user.avatar_url} size={46}/>
-                    </a>
-                </div>
-                <div className='col-span-11 ml-6'>
-                    <div className='flex'>
-                        <a target="_blank" rel='noreferrer' href={html_url} className='text-base leading-4 font-bold text-gray-900 dark:text-white cursor-pointer overflow-hidden text-ellipsis	hover:underline'>
-                            {title}
-                        </a>
-                        <div className='grow'/>
-                        <a target="_blank" rel="noreferrer" href={`https://whatsonchain.com/tx/${txid}`} className='ml-2 text-xs leading-5 whitespace-nowrap text-gray-500 dark:text-gray-300 hover:text-gray-700 hover:dark:text-gray-500'>
-                            {moment(created_at).fromNow()}
-                        </a>
-                    </div>
-                    <div className='mt-1 text-gray-900 dark:text-white text-base leading-6 whitespace-pre-line break-words'>
-                        {body}
-                    </div>
-                    <div className='ml-1'>
-                <div className='flex w-full'>
-                  <div className='grow'/>
+        <div className="col-span-12">
+          <div className="mb-0.5 px-4 pt-4 pb-1 grid items-start grid-cols-12 max-w-screen cursor-pointer">
+            <div className="col-span-1">
+              <a target="_blank" rel="noreferrer" href={user.html_url}>
+                <UserIcon src={user.avatar_url} size={46} />
+              </a>
+            </div>
+            <div className="col-span-11 ml-6">
+              <div className="flex">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={html_url}
+                  className="text-base leading-4 font-bold text-gray-900 dark:text-white cursor-pointer overflow-hidden text-ellipsis	hover:underline"
+                >
+                  {title}
+                </a>
+                <div className="grow" />
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`https://whatsonchain.com/tx/${txid}`}
+                  className="ml-2 text-xs leading-5 whitespace-nowrap text-gray-500 dark:text-gray-300 hover:text-gray-700 hover:dark:text-gray-500"
+                >
+                  {moment(created_at).fromNow()}
+                </a>
+              </div>
+              <div className="mt-1 text-gray-900 dark:text-white text-base leading-6 whitespace-pre-line break-words">
+                {body}
+              </div>
+              <div className="ml-1">
+                <div className="flex w-full px-16">
+                  <div className="grow" />
 
-                  <div onClick={handleClickRewards} className='min-w-[111px] justify-center flex group items-center w-fit relative'>
-                  
-                  <i class="fak fa-thin"></i>
-                    <p className="text-gray-500 dark:text-gray-300 group-hover:text-green-500">
-                        ₿ {satoshis}
-                      </p>
+                  <div
+                    onClick={handleClickRewards}
+                    className="min-w-[111px] justify-center flex group items-center w-fit relative"
+                  >
+                    <p className="text-gray-500 dark:text-gray-300 group-hover:text-[#B17C01]">
+                      ₿ {satoshis * 1e-8}
+                    </p>
                   </div>
-                  <div onClick={handleComment} className='min-w-[111px] justify-center flex group items-center w-fit relative'>
+                  <div
+                    onClick={handleComment}
+                    className="min-w-[111px] justify-center flex group items-center w-fit relative"
+                  >
                     <svg
                       viewBox="0 0 40 40"
                       fill="none"
@@ -102,18 +170,32 @@ const GithubIssueCard = (props) => {
                       ></path>
                     </svg>
                     <p className="text-gray-500 dark:text-gray-300 group-hover:text-green-500">
-                        {comments}
-                      </p>
+                      {comments}
+                    </p>
                   </div>
-                  <BoostButton tx_id={txid} difficulty={difficulty || 0}/>
+                  <BoostButton
+                    content={txid}
+                    difficulty={difficulty || 0}
+                    showDifficulty
+                    onSending={handleBoostLoading}
+                    onError={handleBoostError}
+                    onSuccess={handleBoostSuccess}
+                  />
                 </div>
               </div>
-                </div>
             </div>
+          </div>
         </div>
+      </div>
+      <Drawer
+        selector="#bugBountyPopupControler"
+        isOpen={bugBountyPopupOpen}
+        onClose={() => setBugBountyPopupOpen(false)}
+      >
+        <BugBountyPopup address={run_owner} onClose={() => setBugBountyPopupOpen(false)}/>
+      </Drawer>
+    </>
+  );
+};
 
-    </div>
-  )
-}
-
-export default GithubIssueCard
+export default GithubIssueCard;
