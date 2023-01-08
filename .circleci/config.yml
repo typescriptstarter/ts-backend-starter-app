@@ -11,10 +11,14 @@ jobs:
           name: Build docker image
           command: docker build -t proofofwork/powco.dev:$CIRCLE_BRANCH . 
       - run:
+          name: Build docker image
+          command: cd web-ui && docker build -t proofofwork/powco.dev-webui:$CIRCLE_BRANCH . 
+      - run:
           name: Push to Docker Hub
           command: |
             docker login --username $DOCKER_USER --password $DOCKER_PASSWORD
             docker push proofofwork/powco.dev:$CIRCLE_BRANCH
+            docker push proofofwork/powco.dev-webui:$CIRCLE_BRANCH
 
 workflows:
   version: 2
