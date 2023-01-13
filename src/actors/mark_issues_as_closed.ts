@@ -46,6 +46,4 @@ export default async function(channel, msg, json) {
 
     }
 
-    channel.ack(msg);
-
 }

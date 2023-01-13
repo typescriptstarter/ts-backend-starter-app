@@ -32,6 +32,5 @@ export default async function start(channel, msg, val) {
 
   log.info('rabbi.actor.stag.onchain.post.result', { txid, txhex })
 
-  channel.ack(msg)
 }
 
