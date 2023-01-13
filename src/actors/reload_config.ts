@@ -18,6 +18,5 @@ export default async function start(channel, msg, json) {
 
   loadFromFiles()
   
-  channel.ack(msg)
 }
 

@@ -16,6 +16,4 @@ export default async function start(channel, msg, json) {
 
   log.info(json);
 
-  channel.ack(msg);
-
 }
