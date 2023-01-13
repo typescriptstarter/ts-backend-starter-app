@@ -5,7 +5,7 @@ export async function handleWebhook(webhook: any) {
 
     try {
 
-        if (webhook.action === "created" && !!webhook.issue && !!webhook.repository) {
+        if (webhook.action === "opened" && !!webhook.issue && !!webhook.repository) {
 
             const [ org, repo ] = webhook.repository.split('/')
 
