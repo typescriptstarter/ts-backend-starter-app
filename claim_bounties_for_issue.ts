@@ -9,8 +9,8 @@ export async function main() {
 
     const txid = await claimBounty({
         org: 'pow-co',
-        repo: 'askbitcoin',
-        number: 5,
+        repo: 'next.askbitcoin.ai',
+        number: 17,
         destination: '12syqu1XwFzGVqTTK5U6EkJaqq2FPeLmRH' // owenkellogg@relayx.io
     })
 

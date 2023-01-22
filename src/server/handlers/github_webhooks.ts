@@ -12,6 +12,7 @@ import { onchain } from 'stag-wallet'
 import { handleWebhook } from '../../webhooks'
 
 import { publish } from 'rabbi'
+import { createLogger } from 'winston'
 
 const axios = require('axios')
 
@@ -35,37 +36,19 @@ export async function create(req, h) {
 
     const webhook = await models.GithubWebhook.create({ payload });
 
-    publish('powco.dev', 'github.webhook.created', webhook.toJSON())
+    console.log(payload, '--ACTION--')
 
-    handleWebhook(payload)
-
-    /*(async () => {
-
-      if (!webhook.payload.issue) {
-        return
-      }
-  
-      if (!webhook.tx_id) {
-  
-        const { txid, txhex, txo } = await onchain.post({
-          app: 'alpha.powco.dev',
-          key: 'github.webhook',
-          val: webhook.payload
-        })
-  
-        log.info('rabbi.actor.stag.onchain.post.result', { txid, txhex, txo })
-  
-        webhook.tx_id = txid
-  
-        await webhook.save()
-  
-      }
-  
-      await axios.get(`https://onchain.sv/api/v1/events/${webhook.tx_id}`)
-
-    })()*/
+    const json = webhook.toJSON()
 
     log.info('github.webhook.created', { payload })
+
+    publish('powco.dev', 'github.webhook.created', json)
+
+    log.info(`github.webhook.action.${JSON.parse(json.payload).action}`)
+
+    publish('powco.dev', `github.webhook.action.${JSON.parse(json.payload).action}`, json)
+
+    handleWebhook(payload)
 
   } catch(error) {
 

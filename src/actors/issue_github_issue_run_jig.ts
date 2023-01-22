@@ -45,16 +45,3 @@ export default async function start(channel, msg, json) {
   }
 
 }
-
-;(async () => {
-
-    const issues = await models.GithubIssue.findAll()
-
-    for (let issue of issues) {
-
-        publish('powco.dev', 'github.issue.created', issue.toJSON())
-        
-    }
-
-
-})()

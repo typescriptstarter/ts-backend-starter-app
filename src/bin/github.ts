@@ -49,14 +49,27 @@ async function main() {
     }
   })
 
-  let org = 'pow-co'
+  let org = process.argv[2] || 'pow-co'
+
+  const repo = process.argv[3] || 'powco.dev'
+
+  //const issues = await listIssues({ org, repo })
+  
+  //console.log(issues)
+
+  /*for (let issue of issues) {
+
+    console.log({ title: issue.title, state: issue.state })
+  }
+
+  console.log(`${issues.length} open issues for ${org}/${repo}`)
   
   const { data: repos } = await requestWithAuth("GET /orgs/:org/repos", {
     org,
     type: "public"
-  });
+  });*/
 
-  for (let {name: repo} of repos) {
+  /*for (let {name: repo} of repos) {
 
     const issues = await listIssues({ org, repo })
   
@@ -64,56 +77,45 @@ async function main() {
   
     for (let issue of issues) {
   
-      //console.log({ title: issue.title, state: issue.state })
+      console.log({ title: issue.title, state: issue.state })
     }
   
     console.log(`${issues.length} open issues for ${org}/${repo}`)
 
+  }*/
 
-  }
-
-  /*
-
-  const appOctokit = new Octokit({
-    authStrategy: createOAuthAppAuth,
+  const octokit = new Octokit({
+    authStrategy: createAppAuth,
     auth: {
-      clientId: process.env.github_client_id,
-      clientSecret: process.env.github_client_secret
-    },
-  });
-  
-  // Send requests as app
-  /*&await appOctokit.request("POST /application/{client_id}/token", {
-    client_id: "1234567890abcdef1234",
-    access_token: "existingtoken123",
-  });
-  console.log("token is valid");
-  
-  // create a new octokit instance that is authenticated as the user
-  const userOctokit: any = await appOctokit.auth({
-    type: "oauth-user",
-    code: "403f4f68e382f8bf694e",
-    factory: (options) => {
-      return new Octokit({
-        authStrategy: createOAuthUserAuth,
-        auth: options,
-      });
+      appId: 251846,
+      privateKey: privateKey.toString(),
+      installationId: 31749918
     },
   });
 
-  console.log(userOctokit.rest.issues)
+  const {
+    data: { slug },
+  } = await octokit.rest.apps.getAuthenticated();
 
-  const issuesForOrg = await userOctokit.rest.issues.listForAuthenticatedUser()
+  const owner = org
 
-  console.log({ issuesForOrg })
-  
-  // Exchanges the code for the user access token authentication on first request
-  // and caches the authentication for successive requests
-  /*const {
-    data: { login }, //@ts-ignore
-  } = await userOctokit.request("GET /user");
-  console.log("Hello, %s!", login);*/
-  
+  /*const issue = await octokit.rest.issues.create({
+    owner,
+    repo,
+    title: "Hello world from " + slug,
+  });*/
+
+  //console.log(issue, 'issue.created')
+
+  const comment = await octokit.rest.issues.createComment({
+    owner,
+    repo,
+    issue_number: 39,//issue.data.number,
+    body: 'Powco Dev Bot is Watching this Issue!'
+  });
+
+  console.log(comment, 'comment.created')
+
 }
 
 if (require.main === module) {

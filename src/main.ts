@@ -29,11 +29,11 @@ export async function start() {
 
   }
 
-  cron.schedule('* * * * *', async () => { // every minute
+  /*cron.schedule('* * * * *', async () => { // every minute
 
     await postAllWebhooksToBlockchain() 
 
-  });
+  });*/
 
   (async () => {
 
@@ -49,7 +49,7 @@ export async function start() {
   })();
 
 
-  (async () => {
+  /*(async () => {
 
     if (false ) {
 
@@ -76,9 +76,9 @@ export async function start() {
       }
     }
 
-    syncAllReposToBlockchainForever({ org: 'pow-co' })
+    //syncAllReposToBlockchainForever({ org: 'pow-co' })
 
-  })();
+  })();*/
 
 
 }

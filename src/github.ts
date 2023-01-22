@@ -37,37 +37,51 @@ export async function listRepos({org}: {org: string }): Promise<any> {
 
 }
 
-export async function importIssue({ org, repo, issue_id }: {repo: string, org: string, issue_id: any}): Promise<any> {
+export async function importIssue({ org, repo, issue_id }: {repo: string, org: string, issue_id: any}): Promise<[any, boolean]> {
+
+  log.info('github.issue.import', { org, repo, issue_id })
 
   const { data } = await axios.get(`https://api.github.com/repos/${org}/${repo}/issues/${issue_id}`)
 
-  const issue = await models.GithubIssue.findOne({
+  let [record, isNew] = await models.GithubIssue.findOrCreate({
+
     where: {
-      org,
+
+      issue_id: data.id
+
+    },
+
+    defaults: {
+
+      issue_id: data.id,
+
+      data: data,
+
+      state: data.state,
+
       repo,
-      issue_id
+
+      org
+
     }
+
   })
 
-  if (issue) return issue
+  if (isNew) {
 
-  const newIssue = await models.GithubIssue.create({
-    org,
-    repo,
-    issue_id
-  })
+    publish('powco.dev', 'github.issue.created', record.toJSON())
 
-  return newIssue
+  }
+
+  return [record, isNew]
 
 }
 
-export async function importRepoIssues({ org, repo }: any): Promise<any> {
+export async function importRepoIssues({ org, repo }: any): Promise<any[]> {
 
   console.log('importRepoIssues', { org, repo })
 
   const issues = await listIssues({ org, repo })
-
-  const result = []
 
   const issuesMap = issues.reduce((map, issue) => {
     map[parseInt(issue.id)] = issue
@@ -90,19 +104,17 @@ export async function importRepoIssues({ org, repo }: any): Promise<any> {
 
   //console.log('existingIssues', existingIssues.length)
 
+  const results = []
+
   for (let existingIssue of existingIssues) {
 
-    console.log(existingIssue.toJSON())
-
     if (!issuesMap[existingIssue.issue_id.toString()]) {
-
-      console.log('--closing issue', existingIssue.issue_id)
 
       existingIssue.state = 'closed'
 
       const result = await existingIssue.save()
 
-      console.log('CLOSE RESULT', result.toJSON())
+      log.info('issue.closed', result.toJSON())
 
     }
 
@@ -110,43 +122,19 @@ export async function importRepoIssues({ org, repo }: any): Promise<any> {
 
   for (let issue of issues) {
 
-    const [org, repo] = issue.repository_url.split('/repos/')[1].split('/')
+    const [record, isNew] = await importIssue({ org, repo, issue_id: issue.id })
 
-    let [record, isNew] = await models.GithubIssue.findOrCreate({
-
-      where: {
-
-        issue_id: issue.id
-
-      },
-
-      defaults: {
-
-        issue_id: issue.id,
-
-        data: issue,
-
-        state: issue.state,
-
-        repo,
-
-        org
-
-      }
-
-    })
+    results.push(record)
 
     if (isNew) {
 
-      publish('powco.dev', 'github.issue.created', record.toJSON())
-
-      result.push(issue)
+      results.push(issue)
 
     }
 
   }
 
-  return result
+  return results
 
 }
 

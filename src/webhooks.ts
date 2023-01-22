@@ -1,19 +1,44 @@
 
-import { importRepoIssues, syncRepoIssuesToBlockchain } from './github'
+import { importIssue, importRepoIssues, syncRepoIssuesToBlockchain } from './github'
+import { log } from './log';
+import models from './models';
+import { publish } from 'rabbi'
 
-export async function handleWebhook(webhook: any) {
+export async function handleWebhook(payload: any): Promise<any> {
 
     try {
 
-        if (webhook.action === "opened" && !!webhook.issue && !!webhook.repository) {
+        const webhook = await models.GithubWebhook.create({ payload });
 
-            const [ org, repo ] = webhook.repository.split('/')
+        log.info('github.webhook.created', { payload })
 
-            await importRepoIssues({ org, repo })
+        publish('powco.dev', 'github.webhook.created', webhook.toJSON())
 
-            //await syncRepoIssuesToBlockchain({ org, repo })
+        log.info(`github.webhook.action.${payload.action}`)
+
+        publish('powco.dev', `github.webhook.action.${payload.action}`, webhook.toJSON())
+
+        if (payload.action === "opened" && !!payload.issue && !!payload.repository) {
+
+            console.log(payload, '--payload')
+
+            const {
+                repository: {
+                    owner: { login: org },
+                    name: repo
+                },
+                issue: { number: issue_id }
+            } = payload
+
+            console.log({ org, repo, issue_id })
+
+            const record = await importIssue({ org, repo, issue_id })
+
+            console.log(record, '--importIssue--')
 
         }
+
+        return webhook
 
     } catch(error) {
 

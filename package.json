@@ -39,6 +39,7 @@
       "octokit": "^2.0.10",
       "pg": "^8.8.0",
       "powco": "^1.2.0",
+      "probot": "^12.2.9",
       "prom-client": "^14.0.1",
       "prompt-async": "^0.9.9",
       "rabbi": "^1.21.0",
