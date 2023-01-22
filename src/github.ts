@@ -67,12 +67,6 @@ export async function importIssue({ org, repo, issue_id }: {repo: string, org: s
 
   })
 
-  if (isNew) {
-
-    publish('powco.dev', 'github.issue.created', record.toJSON())
-
-  }
-
   return [record, isNew]
 
 }
