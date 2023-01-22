@@ -45,7 +45,7 @@
       "rabbi": "^1.21.0",
       "run-sdk": "^0.6.41",
       "sequelize": "^6.25.3",
-      "stag-wallet": "^0.3.0",
+      "stag-wallet": "^0.5.1",
       "superagent": "^8.0.2",
       "txo": "^0.0.21",
       "winston": "^3.3.3",

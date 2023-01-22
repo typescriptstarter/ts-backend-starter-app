@@ -14,7 +14,7 @@ export default async function start(channel, msg, json) {
 
     if (!json.data.user.login.match('dependabot') && process.env.NODE_ENV === 'production') {
 
-        const result = await notify('powco-development', `${json.data.user.login} created a new github issue for ${json.data.html_url}\n\n${json.data.title}\n\n${json.data.body}`)
+        const result = await notify('powco-development', `${json.data.user.login} created a new github issue for ${json.data.html_url}\n\n${json.data.title}\n\n${json.data.body || ''}`)
 
         console.log('rocketchat.notified', result)
     }
