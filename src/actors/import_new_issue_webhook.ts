@@ -15,10 +15,10 @@ export default async function(channel, msg, json) {
 
         console.log('IMPORT NEW ISSUE', json)
 
-        const [ org, repo ] = json.payload.repository.split('/')
-        
         const {
             payload: {
+                organization: { login: org },
+                repository: { name: repo },
                 issue: { number: issue_id }
             }
         } = json
