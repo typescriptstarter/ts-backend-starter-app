@@ -84,12 +84,13 @@ async function main() {
 
   }*/
 
+  
   const octokit = new Octokit({
     authStrategy: createAppAuth,
     auth: {
       appId: 251846,
       privateKey: privateKey.toString(),
-      installationId: 31749918
+      installationId: 30471878
     },
   });
 

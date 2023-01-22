@@ -1,18 +1,24 @@
 
+require('dotenv').config()
+
 export const exchange = 'powco.dev'
 
 export const routingkey = 'github.issue.created'
 
-export const queue = 'powco.dev.github.bot.issue.created.comment.post'
+export const queue = 'powco.dev.github.issue.created.comment.post'
+
+import { commentOnNewIssue } from "../comment"
 
 export default async function start(channel, msg, json) {
 
-    if (json.issue) {
+    console.log('NEW ISSUE CREATED -- POST BOT COMMENT RUN RUN BOUNTY ADDRESS', json)
 
-        console.log('NEW ISSUE CREATED -- POST BOT COMMENT RUN RUN BOUNTY ADDRESS', json)
+    const result = await commentOnNewIssue({
+        owner: json.org,
+        repo: json.repo,
+        issue_number: json.data.number,
+    })
 
-        // TODO: Post a comment with the issue's RUN Address
-
-    }
+    console.log('github.issue.comment.post', {result})
 
 }

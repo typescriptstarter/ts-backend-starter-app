@@ -34,21 +34,8 @@ export async function create(req, h) {
 
   try {
 
-    const webhook = await models.GithubWebhook.create({ payload });
 
-    console.log(payload, '--ACTION--')
-
-    const json = webhook.toJSON()
-
-    log.info('github.webhook.created', { payload })
-
-    publish('powco.dev', 'github.webhook.created', json)
-
-    log.info(`github.webhook.action.${JSON.parse(json.payload).action}`)
-
-    publish('powco.dev', `github.webhook.action.${JSON.parse(json.payload).action}`, json)
-
-    handleWebhook(payload)
+    const webhook = await handleWebhook(payload)
 
   } catch(error) {
 
