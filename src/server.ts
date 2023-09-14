@@ -15,8 +15,6 @@ const Pack = require('../package');
 
 import { load } from './server/handlers'
 
-import { plugin as socketio } from './socket.io/plugin'
-
 const handlers = load(join(__dirname, './server/handlers'))
 
 export const server = new Server({
@@ -107,8 +105,6 @@ export async function start() {
 
     log.info('server.api.documentation.swagger', swaggerOptions)
   }
-
-  await server.register(socketio);
 
   await server.start();
 
