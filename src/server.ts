@@ -30,7 +30,11 @@ export const server = new Server({
   }
 });
 
+const { createPlugin: promsterPlugin } = require('@promster/hapi');
+
 if (config.get('prometheus_enabled')) {
+
+  server.register(promsterPlugin())
 
   log.info('server.metrics.prometheus', { path: '/metrics' })
 
