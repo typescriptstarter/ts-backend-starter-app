@@ -1,7 +1,7 @@
 {
-   "name": "ts-backend-starter-app",
-   "version": "0.6.0",
-   "description": "Typescript Backend Best Practices With Postgres & RabbitMQ",
+   "name": "typescriptstarter",
+   "version": "0.7.0",
+   "description": "Typescript Backend Best Practices With Hapi, Websockets, Prisma, Postgres, RabbitMQ, & Prometheus",
    "scripts": {
       "dev": "ts-node-dev src/main.ts",
       "start": "ts-node src/main.ts",
@@ -23,6 +23,7 @@
       "@hapi/inert": "^6.0.5",
       "@hapi/joi": "^17.1.1",
       "@hapi/vision": "^6.1.0",
+      "@prisma/client": "^5.6.0",
       "@promster/hapi": "^12.0.0",
       "commander": "^9.3.0",
       "dotenv": "^10.0.0",
@@ -31,11 +32,10 @@
       "nconf": "^0.12.0",
       "node-cron": "^3.0.0",
       "pg": "^8.11.3",
+      "prisma": "^5.6.0",
       "prom-client": "^14.0.1",
       "prompt-async": "^0.9.9",
       "rabbi": "^1.23.0",
-      "sequelize": "^6.33.0",
-      "sequelize-cli": "^6.6.1",
       "winston": "^3.3.3",
       "ws": "^8.2.0"
    },

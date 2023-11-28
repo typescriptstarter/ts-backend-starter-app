@@ -80,11 +80,13 @@ export async function start() {
 
   if (config.get('swagger_enabled')) {
 
+	console.log('SWAGGER')
+
     const swaggerOptions = {
       info: {
-        title: 'API Docs',
+        title: `${Pack.name} API Docs`,
         version: Pack.version,
-        description: 'Developer API Documentation \n\n *** DEVELOPERS *** \n\n Edit this file under `swaggerOptions` in `src/server.ts` to better describe your service.'
+        description: Pack.description
       },
       schemes: ['http', 'https'],
       host: 'localhost:5200',
