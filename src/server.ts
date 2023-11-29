@@ -55,7 +55,8 @@ if (config.get('prometheus_enabled')) {
 }
 
 server.route({
-  method: 'GET', path: '/api/v0/status',
+  method: 'GET',
+  path: '/api/v0/status',
   handler: handlers.Status.index,
   options: {
     description: 'Simply check to see that the server is online and responding',
@@ -66,6 +67,31 @@ server.route({
         status: Joi.string().valid('OK', 'ERROR').required(),
         error: Joi.string().optional()
       }).label('ServerStatus')
+    }
+  }
+})
+
+const Instructor = Joi.object({
+  id: Joi.number().integer().required(),
+  name: Joi.string().required(),
+  position: Joi.string().email().optional(),
+  slug: Joi.string().email().optional(),
+}).label('Instructor')
+
+server.route({
+  method: 'GET',
+  path: '/api/instructors',
+  handler: handlers.Instructors.index,
+  options: {
+    description: 'List instructors at the academy',
+    tags: ['api', 'instructors'],
+    response: {
+      failAction: 'log',
+      schema: Joi.object({
+        instructors: Joi.array()
+        .items(Instructor)
+        .label('Instructors')
+      })
     }
   }
 })

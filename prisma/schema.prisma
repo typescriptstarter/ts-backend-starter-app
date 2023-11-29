@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int                @id @default(autoincrement())
+  email             String             @unique
+  password          String
+  username          String
+  EmailPasswordAuth EmailPasswordAuth?
+  Instructor        Instructor[]
+  JwtToken          JwtToken[]
+  SocialMediaAuth   SocialMediaAuth[]
+}
+
+model EmailPasswordAuth {
+  id       Int    @id @default(autoincrement())
+  userId   Int    @unique
+  password String
+  User     User   @relation(fields: [userId], references: [id])
+}
+
+model Instructor {
+  id        Int     @id @default(autoincrement())
+  userId    Int?
+  name      String
+  position  String?
+  slug      String?
+  image_url String?
+  User      User?   @relation(fields: [userId], references: [id])
+}
+
+model JwtToken {
+  id     Int    @id @default(autoincrement())
+  userId Int
+  token  String
+  User   User   @relation(fields: [userId], references: [id])
+}
+
+model SocialMediaAuth {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  provider String
+  socialId String
+  User     User   @relation(fields: [userId], references: [id])
+}
