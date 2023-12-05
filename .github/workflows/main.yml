@@ -47,11 +47,6 @@ jobs:
       - name: Push Prisma Schema to PostgreSQL
         run: npx prisma db push
 
-      - name: Build Static App
-        env:
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
-        run: yarn run build
-
       - name: Run Tests
         env:
           JWT_SECRET: secret
