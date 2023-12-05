@@ -1,0 +1,92 @@
+name: CI/CD Pipeline
+
+on: push # Triggers the workflow on push to any branch
+
+env:
+  POSTGRES_PRISMA_URL: postgresql://postgres:postgres@localhost:5432/test_db
+  POSTGRES_URL_NON_POOLING: postgresql://postgres:postgres@localhost:5432/test_db
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.6.0'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Wait for PostgreSQL to start
+        run: |
+          for i in {1..10}; do
+            pg_isready -h localhost -p 5432 -U postgres && echo "PostgreSQL started" && break
+            echo "Waiting for PostgreSQL to start..."
+            sleep 5
+          done
+
+      - name: Push Prisma Schema to PostgreSQL
+        run: npx prisma db push
+
+      - name: Build Static App
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+        run: yarn run build
+
+      - name: Run Tests
+        env:
+          JWT_SECRET: secret
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          POSTGRES_PRISMA_URL: postgresql://postgres:postgres@localhost:5432/test_db
+          POSTGRES_URL_NON_POOLING: postgresql://postgres:postgres@localhost:5432/test_db
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          UPLOADS_DIR: ${{ secrets.UPLOADS_DIR }}
+        run: npm run test
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - name: Deploy to Web Servers
+        run: ssh -o StrictHostKeyChecking=no ubuntu@zencodeschool.com "/opt/zencodeschool.com/deploy_production.sh"
+
+  deploy_develop:
+    if: github.ref == 'refs/heads/develop'
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH Agents
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - name: Deploy Develop Branch To Staging Web Server
+        run: ssh -o StrictHostKeyChecking=no ubuntu@develop.zencodeschool.com "/opt/zencodeschool.com/deploy_develop.sh"
