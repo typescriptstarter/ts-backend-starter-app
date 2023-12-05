@@ -26,7 +26,7 @@ describe('Swagger Documentation', () => {
 
     const response = await server.inject({
       method: 'GET',
-      url: '/'
+      url: '/api'
     })
 
     expect(response.statusCode).to.be.equal(200)
