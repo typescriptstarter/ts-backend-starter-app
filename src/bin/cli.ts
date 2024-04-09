@@ -6,8 +6,6 @@ import { program } from 'commander'
 
 import { start as server } from '../server'
 
-import { start as actors } from '../rabbi/actors'
-
 import { start as main } from '../main'
 
 program
@@ -48,14 +46,6 @@ program
   .action(() => {
 
     server()
-
-  })
-
-program
-  .command('actors')
-  .action(() => {
-
-    actors()
 
   })
 

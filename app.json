@@ -1,0 +1,26 @@
+{
+  "name": "Typescript Backend Starter",
+  "description": "Template for a Great Real-Time Nodejs Backend",
+  "repository": "https://github.com/typescriptstarter/ts-backend-starter-app",
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "backend",
+    "server",
+    "api",
+    "websockets",
+    "http",
+    "prisma",
+    "framework"
+  ],
+  "env": {
+    "HTTP_HOST": {
+      "required": false,
+      "description": "HTTP JSON API server listens on this host"
+    },
+    "HTTP_PORT": {
+      "required": false,
+      "description": "HTTP JSON API server listens on this port"
+    }
+  }
+}

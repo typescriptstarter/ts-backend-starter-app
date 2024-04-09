@@ -7,13 +7,13 @@ import exampleActor from './actors/example'
 
 export async function start() {
 
-  if (config.get('http_api_enabled')) {
+  if (config.get('HTTP_API_ENABLED')) {
 
     server();
 
   }
 
-  if (config.get('amqp_enabled')) {
+  if (config.get('AMQP_ENABLED')) {
 
     exampleActor();
 

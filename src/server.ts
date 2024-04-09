@@ -3,7 +3,7 @@ require('dotenv').config()
 
 import config from './config'
 
-import { Server } from '@hapi/hapi'
+import { Server, Request, ResponseToolkit } from '@hapi/hapi'
 
 import { log } from './log'
 
@@ -13,13 +13,11 @@ const Joi = require('joi')
 
 const Pack = require('../package');
 
-import { load } from './server/handlers'
-
-const handlers = load(join(__dirname, './server/handlers'))
+import { handlers } from './server/handlers'
 
 export const server = new Server({
-  host: config.get('host'),
-  port: config.get('port'),
+  host: config.get('HTTP_HOST'),
+  port: config.get('HTTP_PORT'),
   routes: {
     cors: true,
     validate: {
@@ -32,7 +30,7 @@ export const server = new Server({
 
 const { createPlugin: promsterPlugin } = require('@promster/hapi');
 
-if (config.get('prometheus_enabled')) {
+if (config.get('PROMETHEUS_ENABLED')) {
 
   server.register(promsterPlugin())
 
@@ -43,7 +41,7 @@ if (config.get('prometheus_enabled')) {
   server.route({
     method: 'GET',
     path: '/metrics',
-    handler: async (req, h) => {
+    handler: async (req: Request, h: ResponseToolkit) => {
       return h.response(await prometheus.metrics())
     },
     options: {
@@ -78,7 +76,7 @@ export async function start() {
 
   started = true
 
-  if (config.get('swagger_enabled')) {
+  if (config.get('SWAGGER_ENABLED')) {
 
 	console.log('SWAGGER')
 

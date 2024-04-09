@@ -1,6 +1,6 @@
 {
    "name": "typescriptstarter",
-   "version": "0.7.0",
+   "version": "0.8.0",
    "description": "Typescript Backend Best Practices With Hapi, Websockets, Prisma, Postgres, RabbitMQ, & Prometheus",
    "scripts": {
       "dev": "ts-node-dev src/main.ts",
@@ -10,7 +10,8 @@
       "build": "tsc",
       "postbuild": "shebang-trim dist/bin/cli.js && chmod +x dist/bin/cli.js",
       "ci": "circleci local execute --job build",
-      "commit": "npx cz"
+      "commit": "npx cz",
+      "release": "npx pkg"
    },
    "bin": {
       "rabbi": "./dist/bin/cli.js"
@@ -19,15 +20,14 @@
    "author": "Zyler",
    "license": "",
    "dependencies": {
-      "@hapi/hapi": "^20.2.2",
+      "@hapi/hapi": "^21.3.9",
       "@hapi/inert": "^6.0.5",
-      "@hapi/joi": "^17.1.1",
       "@hapi/vision": "^6.1.0",
       "@prisma/client": "^5.6.0",
       "@promster/hapi": "^12.0.0",
       "commander": "^9.3.0",
       "dotenv": "^10.0.0",
-      "hapi-swagger": "^14.3.0",
+      "hapi-swagger": "^17.2.1",
       "joi": "^17.6.0",
       "nconf": "^0.12.0",
       "node-cron": "^3.0.0",
@@ -35,19 +35,22 @@
       "prisma": "^5.6.0",
       "prom-client": "^14.0.1",
       "prompt-async": "^0.9.9",
-      "rabbi": "^1.23.0",
+      "rabbi": "^1.25.0",
+      "uuid": "^9.0.1",
       "winston": "^3.3.3",
       "ws": "^8.2.0"
    },
    "devDependencies": {
       "@hapi/code": "^8.0.7",
       "@hapi/lab": "^24.6.0",
+      "@types/nconf": "^0.10.6",
       "@types/node": "^8.10.66",
       "chai": "^4.3.6",
       "chai-as-promised": "^7.1.1",
       "commitizen": "^4.2.4",
       "cz-conventional-changelog": "^3.3.0",
       "mocha": "^9.1.2",
+      "pkg": "^5.8.1",
       "shebang-trim": "^1.1.0",
       "ts-node": "^10.9.1",
       "typedoc": "^0.23.24"
@@ -56,5 +59,15 @@
       "commitizen": {
          "path": "./node_modules/cz-conventional-changelog"
       }
+   },
+   "pkg": {
+      "targets": [
+         "node16-linux-x64",
+         "node16-linux-arm64",
+         "node16-macos-x64",
+         "node16-macos-arm64",
+         "node16-win-x64"
+      ],
+      "outputPath": "release"
    }
 }

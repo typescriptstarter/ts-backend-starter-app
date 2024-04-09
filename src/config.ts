@@ -1,9 +1,9 @@
 
-require('dotenv').config()
+import { config } from 'dotenv'
 
-const nconf = require('nconf')
+config()
 
-const os = require('os')
+import * as nconf from 'nconf'
 
 nconf.argv({
   parseValues: true
@@ -13,46 +13,18 @@ nconf.env({
   parseValues: true
 })
 
-const global_file = `/etc/rabbi/config.json`
-
-const user_file = `${os.homedir()}/.rabbi/config.json`
-
-const project_file = `${process.cwd()}/.rabbi/config.json`
-
-nconf.add('project_file', { type: 'file', file: project_file })
-
-nconf.add('user_file', { type: 'file', file: user_file })
-
-nconf.add('global_file', { type: 'file', file: global_file })
-
-export function loadFromFiles() {
-
-  nconf.use('project_file', { type: 'file', file: project_file })
-
-  nconf.use('user_file', { type: 'file', file: user_file })
-
-  nconf.use('global_file', { type: 'file', file: global_file })
-
-}
-
-loadFromFiles()
-
-process.on('SIGHUP', () => {
-
-  loadFromFiles()
-
-})
-
 nconf.defaults({
-  log_level: 'info',
-  host: '0.0.0.0',
-  port: '5200',
-  prometheus_enabled: true,
-  http_api_enabled: true,
-  swagger_enabled: true,
-  postgres_enabled: false,
-  amqp_enabled: process.env.AMQP_URL ? true : false,
-  loki_enabled: false
+  LOG_LEVEL: 'info',
+  HTTP_HOST: '0.0.0.0',
+  HTTP_PORT: 5200,
+  WEBSOCKET_HOST: '0.0.0.0',
+  WEBSOCKET_PORT: 5202,
+  PROMETHEUS_ENABLED: true,
+  HTTP_API_ENABLED: true,
+  SWAGGER_ENABLED: true,
+  POSTGRES_ENABLED: false,
+  AMQP_ENABLED: process.env.AMQP_URL ? true : false,
+  LOKI_ENABLED: false
 })
 
 export default nconf
