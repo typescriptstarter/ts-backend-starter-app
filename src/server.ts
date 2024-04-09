@@ -15,6 +15,14 @@ const Pack = require('../package');
 
 import { handlers } from './server/handlers'
 
+import { z } from 'zod'
+
+const zodValidator: any = {
+  compile: (schema: any) => ({
+      validate: (val: any) => schema.parse(val)
+  })
+};
+
 export const server = new Server({
   host: config.get('HTTP_HOST'),
   port: config.get('HTTP_PORT'),
@@ -27,6 +35,8 @@ export const server = new Server({
     }
   }
 });
+
+server.validator(zodValidator)
 
 const { createPlugin: promsterPlugin } = require('@promster/hapi');
 
